@@ -1,0 +1,38 @@
+.page-hero {
+  padding: 4rem 0 3rem;
+  background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
+  color: white;
+  text-align: center;
+}
+
+.page-hero--compact {
+  padding: 3rem 0 2rem;
+}
+
+.page-hero .eyebrow {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-accent-gold);
+  margin-bottom: 0.75rem;
+}
+
+.page-hero h1 {
+  color: white;
+  margin-bottom: 0.75rem;
+}
+
+.page-hero p {
+  font-size: 1.125rem;
+  opacity: 0.9;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.page-hero a {
+  color: var(--color-accent-gold);
+  text-decoration: underline;
+}

@@ -1,0 +1,90 @@
+.terminais-page__subtitle {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.terminais-status-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.terminal-status-card {
+  padding: 1.25rem;
+}
+
+.terminal-status-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.terminal-status-card__route {
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.terminal-status-card__details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+.terminal-status-card__details span {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.terminais-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.terminal-card {
+  padding: 1.5rem;
+  position: relative;
+}
+
+.terminal-card__badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.25rem 0.75rem;
+  background: var(--color-primary);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: var(--radius-full);
+}
+
+.terminal-card h3 {
+  font-size: 1.125rem;
+  margin-bottom: 0.25rem;
+  padding-right: 3rem;
+}
+
+.terminal-card__city {
+  font-size: 0.9375rem;
+  color: var(--color-secondary);
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.terminal-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.terminal-card__info span {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}

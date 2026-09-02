@@ -1,0 +1,204 @@
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.hero__background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero__bus-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 72% center;
+  transform: scale(1.02);
+  z-index: 0;
+}
+
+.hero__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    105deg,
+    rgba(6, 58, 107, 0.92) 0%,
+    rgba(10, 77, 140, 0.78) 28%,
+    rgba(10, 77, 140, 0.42) 50%,
+    rgba(15, 23, 42, 0.08) 100%
+  );
+}
+
+.hero__gradient {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background:
+    radial-gradient(ellipse at 18% 85%, rgba(232, 93, 4, 0.22) 0%, transparent 45%),
+    linear-gradient(to top, rgba(15, 23, 42, 0.55) 0%, transparent 38%);
+  pointer-events: none;
+}
+
+.hero__content {
+  position: relative;
+  z-index: 3;
+  padding: 3rem 1.5rem 4rem;
+}
+
+.hero__text {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero__eyebrow {
+  display: inline-block;
+  padding: 0.375rem 1rem;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius-full);
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-accent-gold);
+  margin-bottom: 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.hero h1 {
+  color: white;
+  font-size: clamp(2.25rem, 6vw, 4rem);
+  font-weight: 800;
+  margin-bottom: 1.25rem;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.35);
+}
+
+.hero__highlight {
+  background: linear-gradient(135deg, var(--color-accent-gold) 0%, var(--color-secondary-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero__subtitle {
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  color: rgba(255, 255, 255, 0.92);
+  line-height: 1.7;
+  max-width: 650px;
+  margin: 0 auto;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.3);
+}
+
+.hero__tools {
+  width: 100%;
+  max-width: 1180px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero__search {
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+.hero__features {
+  width: 100%;
+}
+
+.hero__scroll-indicator {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  z-index: 3;
+}
+
+.hero__scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.6), transparent);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    min-height: auto;
+    padding-bottom: 3rem;
+  }
+
+  .hero__bus-image {
+    object-position: center 45%;
+  }
+
+  .hero__overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(6, 58, 107, 0.88) 0%,
+      rgba(10, 77, 140, 0.78) 45%,
+      rgba(10, 77, 140, 0.55) 100%
+    );
+  }
+
+  .hero__content {
+    padding: 2rem 1rem 3rem;
+  }
+
+  .hero__scroll-indicator {
+    display: none;
+  }
+}
+
+@media (min-width: 1200px) {
+  .hero__bus-image {
+    object-position: 68% center;
+  }
+
+  .hero__content {
+    width: 100%;
+    max-width: none;
+    margin-right: auto;
+    margin-left: 0;
+    padding-left: max(1.5rem, calc((100vw - var(--max-width)) / 2 + 1.5rem));
+    padding-right: max(1.5rem, calc((100vw - var(--max-width)) / 2 + 1.5rem));
+  }
+
+  .hero__tools {
+    max-width: min(1180px, calc(100vw - 3rem));
+    margin-left: 0;
+    margin-right: auto;
+  }
+
+  .hero__text {
+    max-width: 640px;
+    text-align: left;
+    margin-left: 0;
+    margin-right: auto;
+  }
+
+  .hero__subtitle {
+    margin-left: 0;
+  }
+}
