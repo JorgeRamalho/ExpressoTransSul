@@ -31,12 +31,14 @@ export function StatusBar() {
   return (
     <div className="status-bar" role="region" aria-label="Status de embarques e desembarques nos terminais">
       <div className="status-bar__time">
-        <Clock size={14} />
-        <time dateTime={currentTime.toISOString()}>{timeStr}</time>
-        <span className="status-bar__live">
-          <span className="status-bar__live-dot" />
-          AO VIVO
-        </span>
+        <Clock size={14} aria-hidden="true" />
+        <div className="status-bar__clock-block">
+          <span className="status-bar__live">
+            <span className="status-bar__live-dot" />
+            AO VIVO
+          </span>
+          <time dateTime={currentTime.toISOString()}>{timeStr}</time>
+        </div>
       </div>
 
       <div className="status-bar__track">

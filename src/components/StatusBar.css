@@ -25,6 +25,16 @@
   font-variant-numeric: tabular-nums;
 }
 
+.status-bar__clock-block {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status-bar__clock-block time {
+  order: -1;
+}
+
 .status-bar__live {
   display: flex;
   align-items: center;
@@ -121,7 +131,31 @@
   .status-bar__terminals {
     display: none;
   }
-  .status-bar__time time {
-    display: none;
+
+  .status-bar__time {
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0 0.75rem;
+  }
+
+  .status-bar__clock-block {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.1rem;
+  }
+
+  .status-bar__clock-block time {
+    order: 0;
+    display: block;
+    font-size: 0.75rem;
+    line-height: 1;
+    letter-spacing: 0.03em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .status-bar__live {
+    order: -1;
+    line-height: 1;
   }
 }

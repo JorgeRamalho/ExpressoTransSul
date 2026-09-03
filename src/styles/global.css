@@ -70,6 +70,12 @@
   --max-width: 1280px;
 }
 
+@media (max-width: 768px) {
+  :root {
+    --status-bar-height: 48px;
+  }
+}
+
 *,
 *::before,
 *::after {

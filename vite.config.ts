@@ -24,6 +24,9 @@ export default defineConfig(({ command }) => ({
   // Caminhos relativos no build: o Live Server consegue abrir a pasta dist
   base: command === 'build' ? './' : '/',
   server: {
+    host: '127.0.0.1',
+    port: 5173,
+    strictPort: true,
     proxy: {
       '/api': {
         target: 'http://127.0.0.1:3001',
