@@ -1,3 +1,5 @@
+import { assetUrl } from '../lib/assetUrl';
+
 export type BusImageCategory = 'estrada' | 'rodoviaria' | 'parada-rapida';
 
 export interface BusImage {
@@ -13,7 +15,7 @@ export interface BusImage {
 export const busImages: BusImage[] = [
   {
     id: 'coach-montanha',
-    src: '/images/buses/onibus-estrada-coach.jpg',
+    src: assetUrl('images/buses/onibus-estrada-coach.jpg'),
     alt: 'Ônibus rodoviário executivo grande parado com montanhas ao fundo',
     title: 'Coach Executivo',
     category: 'estrada',
@@ -22,7 +24,7 @@ export const busImages: BusImage[] = [
   },
   {
     id: 'estrada-montanha',
-    src: '/images/buses/onibus-estrada-montanha.jpg',
+    src: assetUrl('images/buses/onibus-estrada-montanha.jpg'),
     alt: 'Ônibus viajando em estrada com montanhas ao fundo',
     title: 'Viagem na Estrada',
     category: 'estrada',
@@ -31,7 +33,7 @@ export const busImages: BusImage[] = [
   },
   {
     id: 'viagem-por-do-sol',
-    src: '/images/buses/onibus-viagem-por-do-sol.jpg',
+    src: assetUrl('images/buses/onibus-viagem-por-do-sol.jpg'),
     alt: 'Ônibus viajando na estrada durante o pôr do sol',
     title: 'Ônibus ao Entardecer',
     category: 'estrada',
@@ -40,7 +42,7 @@ export const busImages: BusImage[] = [
   },
   {
     id: 'estrada-arvores',
-    src: '/images/buses/onibus-estrada-arvores.jpg',
+    src: assetUrl('images/buses/onibus-estrada-arvores.jpg'),
     alt: 'Ônibus circulando em avenida arborizada',
     title: 'Ônibus na Avenida',
     category: 'estrada',
@@ -49,7 +51,7 @@ export const busImages: BusImage[] = [
   },
   {
     id: 'rodoviaria-fln',
-    src: '/images/buses/onibus-rodoviaria-florianopolis.jpg',
+    src: assetUrl('images/buses/onibus-rodoviaria-florianopolis.jpg'),
     alt: 'Ônibus laranja no Terminal Rodoviário de Florianópolis',
     title: 'Terminal Rita Maria',
     category: 'rodoviaria',
@@ -58,7 +60,7 @@ export const busImages: BusImage[] = [
   },
   {
     id: 'terminal-passageiros',
-    src: '/images/buses/onibus-terminal-passageiros.jpg',
+    src: assetUrl('images/buses/onibus-terminal-passageiros.jpg'),
     alt: 'Terminal rodoviário com ônibus e passageiros aguardando embarque',
     title: 'Embarque de Passageiros',
     category: 'rodoviaria',
@@ -67,7 +69,7 @@ export const busImages: BusImage[] = [
   },
   {
     id: 'parado-rodoviaria',
-    src: '/images/buses/onibus-parado-rodoviaria.jpg',
+    src: assetUrl('images/buses/onibus-parado-rodoviaria.jpg'),
     alt: 'Ônibus turismo branco parado na rodoviária sob céu azul',
     title: 'Ônibus na Rodoviária',
     category: 'rodoviaria',
@@ -76,7 +78,7 @@ export const busImages: BusImage[] = [
   },
   {
     id: 'parada-lanchonete',
-    src: '/images/buses/parada-rapida-lanchonete.jpg',
+    src: assetUrl('images/buses/parada-rapida-lanchonete.jpg'),
     alt: 'Lanchonete e restaurante em parada de estrada para refeição rápida',
     title: 'Parada Rápida',
     category: 'parada-rapida',
@@ -85,7 +87,7 @@ export const busImages: BusImage[] = [
   },
   {
     id: 'parada-embarque',
-    src: '/images/buses/parada-rapida-embarque.jpg',
+    src: assetUrl('images/buses/parada-rapida-embarque.jpg'),
     alt: 'Passageiros embarcando e desembarcando de ônibus em ponto de conexão',
     title: 'Parada Rápida',
     category: 'parada-rapida',

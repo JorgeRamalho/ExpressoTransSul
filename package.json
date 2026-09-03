@@ -16,6 +16,7 @@
     "live:watch": "vite build && concurrently -k -n build,server -c blue,green \"vite build --watch\" \"live-server dist --port=5500 --host=127.0.0.1 --open=/ --entry-file=index.html\"",
     "live:full": "concurrently -k -n api,build,server -c green,blue,magenta \"npm run api\" \"vite build --watch\" \"live-server dist --port=5500 --host=127.0.0.1 --open=/ --entry-file=index.html\"",
     "test": "playwright test",
+    "test:api": "node scripts/test-api.mjs",
     "test:ui": "playwright test --ui",
     "test:report": "playwright show-report"
   },

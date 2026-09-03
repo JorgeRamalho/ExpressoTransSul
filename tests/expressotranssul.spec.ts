@@ -1,5 +1,21 @@
 import { test, expect } from '@playwright/test';
 
+function generateValidCpf() {
+  const base = String(Math.floor(Math.random() * 900000000) + 100000000);
+  let sum = 0;
+  for (let i = 0; i < 9; i += 1) sum += Number(base[i]) * (10 - i);
+  let remainder = (sum * 10) % 11;
+  if (remainder === 10) remainder = 0;
+  const d1 = String(remainder);
+  sum = 0;
+  const partial = base + d1;
+  for (let i = 0; i < 10; i += 1) sum += Number(partial[i]) * (11 - i);
+  remainder = (sum * 10) % 11;
+  if (remainder === 10) remainder = 0;
+  const digits = base + d1 + String(remainder);
+  return `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6, 9)}-${digits.slice(9)}`;
+}
+
 test.describe('ExpressoTransSul - SEO', () => {
   test('deve ter meta tags essenciais para SEO', async ({ page }) => {
     await page.goto('/');
@@ -66,6 +82,19 @@ test.describe('ExpressoTransSul - Usabilidade e Navegação', () => {
     await expect(page).toHaveURL(/terminais/);
   });
 
+  test('banner de primeira viagem deve levar ao cadastro com cupom', async ({ page }) => {
+    await page.goto('/');
+
+    const banner = page.getByRole('region', { name: /Motivos pra viajar em Setembro/i });
+    await banner.scrollIntoViewIfNeeded();
+    await expect(banner.getByRole('heading', { name: /Motivos pra viajar em Setembro/i })).toBeVisible();
+    await expect(banner.getByText('PRIMEIRA20').first()).toBeVisible();
+
+    await banner.getByRole('link', { name: /Cadastrar e resgatar cupom/i }).click();
+    await expect(page).toHaveURL(/cadastro/);
+    await expect(page.getByLabel('Promoção de primeira viagem')).toContainText('PRIMEIRA20');
+  });
+
   test('motor de busca deve permitir pesquisa de passagens', async ({ page }) => {
     await page.goto('/');
 
@@ -82,21 +111,22 @@ test.describe('ExpressoTransSul - Usabilidade e Navegação', () => {
   });
 
   test('cadastro multi-step deve funcionar', async ({ page }) => {
+    const unique = Date.now();
     await page.goto('/#/cadastro');
 
     await page.locator('#nome').fill('Maria');
     await page.locator('#sobrenome').fill('Santos');
-    await page.locator('#cpf').fill('529.982.247-25');
+    await page.locator('#cpf').fill(generateValidCpf());
     await page.locator('#dataNascimento').fill('1990-05-15');
     await page.getByRole('button', { name: 'Continuar' }).click();
 
-    await page.locator('#email').fill('maria@test.com');
+    await page.locator('#email').fill(`maria.${unique}@test.com`);
     await page.locator('#celular').fill('(51) 99999-9999');
     await page.getByRole('button', { name: 'Continuar' }).click();
 
-    await page.locator('#cep').fill('90010-000');
+    await page.locator('#cep').fill('82410-450');
     await page.getByRole('button', { name: 'Buscar CEP' }).click();
-    await expect(page.getByText(/ViaCEP|BrasilAPI/i)).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText(/ViaCEP|BrasilAPI|CEP encontrado/i)).toBeVisible({ timeout: 15000 });
     await page.locator('#numero').fill('123');
     await page.getByRole('button', { name: 'Continuar' }).click();
 
@@ -105,7 +135,7 @@ test.describe('ExpressoTransSul - Usabilidade e Navegação', () => {
     await page.locator('input[type="checkbox"]').first().check();
     await page.getByRole('button', { name: /Finalizar Cadastro/i }).click();
 
-    await expect(page.getByText(/Cadastro realizado com sucesso/i)).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText(/Cadastro realizado com sucesso/i)).toBeVisible({ timeout: 15000 });
   });
 
   test('área do cliente demo login funciona', async ({ page }) => {

@@ -1,4 +1,5 @@
 import { Hero } from '../components/Hero';
+import { PromoBanner } from '../components/PromoBanner';
 import { RoutesSection } from '../components/RoutesSection';
 import { CompaniesSection } from '../components/CompaniesSection';
 import { BusGallery } from '../components/BusGallery';
@@ -17,6 +18,7 @@ export function HomePage() {
   return (
     <>
       <Hero />
+      <PromoBanner />
 
       <section className="benefits-section">
         <div className="container">

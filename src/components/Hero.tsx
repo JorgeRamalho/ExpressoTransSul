@@ -1,8 +1,9 @@
+import { assetUrl } from '../lib/assetUrl';
 import { SearchEngine } from './SearchEngine';
 import { BrandFeatures } from './Logo';
 import './Hero.css';
 
-const HERO_IMAGE = '/images/hero-bus-marcopolo.png';
+const HERO_IMAGE = assetUrl('images/hero-bus-marcopolo.png');
 
 export function Hero() {
   return (

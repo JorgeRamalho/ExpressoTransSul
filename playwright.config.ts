@@ -29,13 +29,19 @@ export default defineConfig({
   ],
   webServer: [
     {
-      command: 'npm run api',
+      command:
+        process.platform === 'win32'
+          ? 'powershell -NoProfile -ExecutionPolicy Bypass -Command "$env:Path=\'./.tools/node;\'+$env:Path; npm run api"'
+          : 'npm run api',
       url: 'http://127.0.0.1:3001/api/health',
       reuseExistingServer: !process.env.CI,
       timeout: 120000,
     },
     {
-      command: 'npm run dev',
+      command:
+        process.platform === 'win32'
+          ? 'powershell -NoProfile -ExecutionPolicy Bypass -Command "$env:Path=\'./.tools/node;\'+$env:Path; npm run dev"'
+          : 'npm run dev',
       url: 'http://localhost:5173',
       reuseExistingServer: !process.env.CI,
       timeout: 120000,

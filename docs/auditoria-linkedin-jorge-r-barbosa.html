@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Auditoria de perfil LinkedIn — Jorge R. Barbosa</title>
+  <style>
+    :root {
+      --ink: #1a1f2b;
+      --muted: #5b6475;
+      --line: #d8dde6;
+      --paper: #ffffff;
+      --wash: #f4f6f9;
+      --accent: #1f4e79;
+      --warn: #8a5a12;
+      --warn-bg: #fbf3e6;
+      --danger: #8b2e2e;
+      --ok: #1f6b45;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font: 11.5pt/1.5 "Segoe UI", Calibri, Arial, sans-serif;
+    }
+    @page {
+      size: A4;
+      margin: 16mm 16mm 18mm 16mm;
+    }
+    .page { max-width: 190mm; margin: 0 auto; padding: 12mm 0 8mm; }
+    h1, h2, h3 { font-family: Cambria, Georgia, "Times New Roman", serif; color: var(--accent); margin: 0 0 8pt; }
+    h1 { font-size: 22pt; line-height: 1.2; letter-spacing: -0.02em; }
+    h2 { font-size: 14.5pt; margin-top: 22pt; padding-bottom: 4pt; border-bottom: 1.5pt solid var(--accent); }
+    h3 { font-size: 12pt; margin-top: 14pt; color: var(--ink); }
+    p { margin: 0 0 8pt; }
+    .kicker { font-size: 9pt; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 6pt; }
+    .lede { font-size: 12.5pt; color: var(--ink); }
+    .meta { color: var(--muted); font-size: 9.5pt; }
+    a { color: var(--accent); text-decoration: none; }
+    .cover {
+      display: grid;
+      grid-template-columns: 1fr 42mm;
+      gap: 14pt;
+      align-items: start;
+      margin-bottom: 16pt;
+    }
+    .scorebox {
+      border: 1.5pt solid var(--accent);
+      padding: 10pt 8pt 8pt;
+      text-align: center;
+      background: var(--wash);
+    }
+    .scorebox .n { font-size: 26pt; font-weight: 700; color: var(--accent); line-height: 1; font-family: Cambria, Georgia, serif; }
+    .scorebox .l { font-size: 8pt; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-top: 4pt; }
+    .callout {
+      background: var(--warn-bg);
+      border-left: 3.5pt solid var(--warn);
+      padding: 9pt 12pt;
+      margin: 12pt 0 16pt;
+    }
+    .callout strong { color: var(--warn); }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8pt;
+      margin: 12pt 0 6pt;
+    }
+    .stat {
+      background: var(--wash);
+      border: 0.75pt solid var(--line);
+      padding: 8pt;
+    }
+    .stat b { display: block; font-size: 14pt; color: var(--accent); font-family: Cambria, Georgia, serif; }
+    .stat span { font-size: 8.5pt; color: var(--muted); }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 9.5pt;
+      margin: 8pt 0 12pt;
+    }
+    th {
+      text-align: left;
+      background: var(--accent);
+      color: #fff;
+      padding: 6pt 7pt;
+      font-weight: 600;
+      font-size: 8.5pt;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+    td {
+      padding: 6pt 7pt;
+      border-bottom: 0.6pt solid var(--line);
+      vertical-align: top;
+    }
+    tr:nth-child(even) td { background: var(--wash); }
+    .num { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; white-space: nowrap; }
+    .copy {
+      background: var(--wash);
+      border: 0.75pt solid var(--line);
+      padding: 10pt 12pt;
+      margin: 8pt 0 12pt;
+      page-break-inside: avoid;
+    }
+    .copy .label {
+      font-size: 8pt;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 6pt;
+      font-weight: 600;
+    }
+    ul { margin: 4pt 0 10pt 16pt; padding: 0; }
+    li { margin: 0 0 4pt; }
+    .two {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12pt;
+    }
+    .box {
+      border: 0.75pt solid var(--line);
+      padding: 10pt 12pt;
+      page-break-inside: avoid;
+    }
+    .foot {
+      margin-top: 22pt;
+      padding-top: 8pt;
+      border-top: 0.75pt solid var(--line);
+      font-size: 8.5pt;
+      color: var(--muted);
+    }
+    .bars { margin: 10pt 0 14pt; }
+    .bar-row { display: grid; grid-template-columns: 38mm 1fr 10mm; gap: 8pt; align-items: center; margin: 4pt 0; font-size: 9pt; }
+    .track { height: 7pt; background: #e7ebf1; position: relative; }
+    .fill { height: 100%; background: var(--accent); }
+    .fill.warn { background: #b5812a; }
+    .fill.bad { background: var(--danger); }
+    .fill.ok { background: var(--ok); }
+    .mark {
+      position: absolute;
+      top: -3pt;
+      bottom: -3pt;
+      width: 1.2pt;
+      background: #7a8494;
+      left: 80%;
+    }
+    code, .mono { font-family: Consolas, "Courier New", monospace; font-size: 9.5pt; }
+    .keep { page-break-inside: avoid; }
+    @media print {
+      .page { padding: 0; max-width: none; }
+      a { color: var(--accent); }
+      .callout, .copy, .stat, .box, th, tr:nth-child(even) td, .scorebox, .track, .fill {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+  </style>
+</head>
+<body>
+  <article class="page">
+    <p class="kicker">Relatório profissional de perfil · LinkedIn</p>
+    <div class="cover">
+      <div>
+        <h1>Auditoria do perfil LinkedIn<br />Jorge R. Barbosa</h1>
+        <p class="lede">Diagnóstico de estrutura, escrita e posicionamento para atuar como desenvolvedor web Front-End com certificação UX/UI, sem apagar a base de atendimento ao cliente e suporte de TI.</p>
+        <p class="meta">
+          Perfil: <a href="https://www.linkedin.com/in/jorge-r-barbosa-aabb0417b/">linkedin.com/in/jorge-r-barbosa-aabb0417b</a><br />
+          Local: Curitiba, Paraná · Data da auditoria: 3 de setembro de 2026<br />
+          Recorte público indexado. Foto, banner e métricas privadas (SSI, buscas) não entram nesta nota.
+        </p>
+      </div>
+      <div class="scorebox">
+        <div class="n">39</div>
+        <div class="l">Nota geral<br />em 100</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <p><strong>O perfil conta a história errada para a vaga que você quer.</strong> Recrutadores de Front-End buscam headline com stack e papel de desenvolvimento. O perfil público se apresenta como UX &amp; UI Designer na My Hype, com o Sobre só de soft skills e uma lista de habilidades dominada por suporte (roteador, VoIP, SSH, SLA). A trajetória é sólida. O posicionamento não.</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><b>39/100</b><span>Nota geral do perfil</span></div>
+      <div class="stat"><b>13+ anos</b><span>Histórico visível (TI + produto)</span></div>
+      <div class="stat"><b>4/10</b><span>Headline e Sobre</span></div>
+      <div class="stat"><b>Alta</b><span>Prioridade: reposicionar</span></div>
+    </div>
+
+    <h2>1. Nota por seção</h2>
+    <p class="meta">Escala 0–10. A marca em 8 é o nível competitivo para vagas júnior/pleno de Front-End e UX/UI.</p>
+    <div class="bars">
+      <div class="bar-row"><span>Headline</span><div class="track"><div class="fill warn" style="width:40%"></div><i class="mark"></i></div><span class="num">4</span></div>
+      <div class="bar-row"><span>Sobre</span><div class="track"><div class="fill bad" style="width:30%"></div><i class="mark"></i></div><span class="num">3</span></div>
+      <div class="bar-row"><span>Experiência</span><div class="track"><div class="fill warn" style="width:50%"></div><i class="mark"></i></div><span class="num">5</span></div>
+      <div class="bar-row"><span>Formação</span><div class="track"><div class="fill warn" style="width:40%"></div><i class="mark"></i></div><span class="num">4</span></div>
+      <div class="bar-row"><span>Habilidades</span><div class="track"><div class="fill bad" style="width:30%"></div><i class="mark"></i></div><span class="num">3</span></div>
+      <div class="bar-row"><span>Certificados</span><div class="track"><div class="fill warn" style="width:50%"></div><i class="mark"></i></div><span class="num">5</span></div>
+      <div class="bar-row"><span>Featured</span><div class="track"><div class="fill bad" style="width:20%"></div><i class="mark"></i></div><span class="num">2</span></div>
+      <div class="bar-row"><span>Atividade</span><div class="track"><div class="fill bad" style="width:30%"></div><i class="mark"></i></div><span class="num">3</span></div>
+    </div>
+
+    <h2>2. O que o perfil público mostra hoje</h2>
+    <table>
+      <thead>
+        <tr><th>Seção</th><th>Estado atual</th><th>Problema</th><th>Nota</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Headline / cargo</td>
+          <td>UX &amp; UI Designer · My Hype (fev 2021–hoje)</td>
+          <td>Não cita Front-End, React, HTML/CSS nem remoto</td>
+          <td class="num">4</td>
+        </tr>
+        <tr>
+          <td>Sobre</td>
+          <td>Comunicação, empatia, liderança, aprendizagem, equipe</td>
+          <td>Zero stack, zero prova, zero CTA. Parece carta de soft skill</td>
+          <td class="num">3</td>
+        </tr>
+        <tr>
+          <td>Experiência</td>
+          <td>My Hype, Zucchetti C4, Kiper, Grupo Saga, Nextip</td>
+          <td>Texto em lista de palavras. Sem resultado, stack ou entrega</td>
+          <td class="num">5</td>
+        </tr>
+        <tr>
+          <td>Formação</td>
+          <td>UNIVAG · Sistemas de Informação (título confuso)</td>
+          <td>Campo com keyword stuffing e typo (“Informção”)</td>
+          <td class="num">4</td>
+        </tr>
+        <tr>
+          <td>Habilidades</td>
+          <td>50+ tags: Figma misturado com roteador, VoIP, aos, com, sou</td>
+          <td>Lixo de SEO + suporte afoga Front-End. Recrutador não pina nada</td>
+          <td class="num">3</td>
+        </tr>
+        <tr>
+          <td>Licenças</td>
+          <td>Imagine School Front-End Mód. 1 (2019) e 2 (2020), 70h cada</td>
+          <td>Falta a certificação UX/UI citada, com emissor e data</td>
+          <td class="num">5</td>
+        </tr>
+        <tr>
+          <td>Featured / projetos</td>
+          <td>Não indexado</td>
+          <td>Há projetos reais (sites, portfólios). O LinkedIn não mostra</td>
+          <td class="num">2</td>
+        </tr>
+        <tr>
+          <td>Recomendação</td>
+          <td>Pelo menos 1: destaque em UX/UI e profissionalismo</td>
+          <td>Bom ativo. Peça 2 de Front-End e 1 de atendimento/TI</td>
+          <td class="num">6</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>3. Diagnóstico de posicionamento</h2>
+    <p>Você não é “só UX” nem “só suporte”. O perfil competitivo é um híbrido honesto: <strong>Front-End que desenha a interface e já atendeu usuário de verdade</strong>. Isso é raro e vendável — se a primeira linha disser isso.</p>
+    <p>A My Hype aparece como cargo de designer, mas a descrição mistura templates, Figma, suporte à startup, criação de sites e assessoria de marketing. Recrutador de produto lê “faz-tudo de startup” e não consegue encaixar numa vaga. Recrutador de Front-End nem te encontra, porque a palavra Desenvolvedor não está no headline.</p>
+    <p>O Sobre atual é simpático e genérico. Qualquer candidato pode copiá-lo. O LinkedIn ranqueia por palavras da headline, do Sobre e das skills pinadas. Hoje o algoritmo entrega o perfil para busca de suporte técnico, não de React ou UX/UI júnior/pleno.</p>
+
+    <div class="box keep">
+      <h3 style="margin-top:0">Marca profissional alvo</h3>
+      <p><strong>Desenvolvedor Front-End + UX/UI</strong></p>
+      <p>Entrega: websites, projetos e portfólios. Diferencial: atendimento e suporte de TI (escuta, diagnóstico, didática). Preferência: remoto / home office, dito de forma corporativa.</p>
+      <p class="meta">Não escreva “ama o ambiente do lar”. Escreva “disponível para trabalho remoto, com rotina e foco”.</p>
+    </div>
+
+    <h3>Três erros que mais tiram entrevista</h3>
+    <table>
+      <thead><tr><th>Erro</th><th>Onde aparece</th><th>Como o recrutador lê</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Soft skills sem prova</td>
+          <td>Sobre e lista pessoal (liderança, ideias, foco)</td>
+          <td>Promessa. Sem projeto, cargo ou número, descarta.</td>
+        </tr>
+        <tr>
+          <td>Skills lixo e suporte no topo</td>
+          <td>aos, com, dos, sou, meio, modo, titanium, roteador</td>
+          <td>Perfil descuido. Não é sênior de rede nem de Front-End.</td>
+        </tr>
+        <tr>
+          <td>Experiência em bloco corrido</td>
+          <td>My Hype: uma frase com vírgulas e inglês misturado</td>
+          <td>Não dá para copiar bullets para o ATS nem para o debrief.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>4. Estrutura de um perfil que gera conversa</h2>
+    <p>O LinkedIn é lido em cerca de 20 segundos, de cima para baixo: foto, headline, Sobre (primeiras 3 linhas), última experiência, skills pinadas, Featured. Tudo que importa para a vaga precisa caber nesse funil. O resto é prova para quem já se interessou.</p>
+    <table>
+      <thead><tr><th>Bloco</th><th>Função</th><th>Regra de ouro</th><th>Limite útil</th></tr></thead>
+      <tbody>
+        <tr><td>Headline</td><td>SEO + encaixe na vaga</td><td>Papel + stack + prova curta. Sem poesia.</td><td>220 caracteres</td></tr>
+        <tr><td>Sobre</td><td>Narrativa e palavras-chave</td><td>Quem é / o que entrega / prova / como trabalha / CTA</td><td>1.200–2.000 caracteres</td></tr>
+        <tr><td>Experiência</td><td>Prova operacional</td><td>3–6 bullets: verbo + o quê + para quem + resultado</td><td>Uma tela, sem romance</td></tr>
+        <tr><td>Featured</td><td>Portfólio na primeira dobra</td><td>3 peças: GitHub ou site, 1 case visual, 1 certificado</td><td>3 a 6 itens</td></tr>
+        <tr><td>Skills pinadas</td><td>Busca do recrutador</td><td>Só o que você quer ser contratado para fazer</td><td>3 pinadas + 12–20 no total</td></tr>
+        <tr><td>Atividade</td><td>Sinal de que está vivo na área</td><td>1 post curto por semana sobre uma decisão de projeto</td><td>4 posts / mês</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Sobre — fórmula em 5 blocos</h3>
+    <ol>
+      <li><strong>Abertura em uma linha:</strong> papel + especialidade. “Sou desenvolvedor Front-End com certificação UX/UI.”</li>
+      <li><strong>Entrega:</strong> o que sai da sua mesa. Sites, portfólios, interfaces, protótipos.</li>
+      <li><strong>Origem (o diferencial):</strong> atendimento e suporte de TI viram escuta, diagnóstico e didática — não um segundo currículo de Help Desk.</li>
+      <li><strong>Como trabalha:</strong> stack (HTML, CSS, JS/TS, React, Figma) + comportamento em uma frase (equipe, troca de ideias, foco).</li>
+      <li><strong>CTA:</strong> aberto a Front-End / UX/UI, inclusive remoto. Convite objetivo, sem “fico à disposição para networking” vazio.</li>
+    </ol>
+
+    <h3>Experiência — bullet que funciona</h3>
+    <p>Evite: “Templates, Figma, Produtos e Serviços Digitais.” Isso é tag, não trabalho.</p>
+    <p>Use: verbo no passado ou presente + objeto + contexto + (se tiver) efeito.</p>
+    <div class="copy">
+      <div class="label">Exemplo de bullet</div>
+      <p style="margin:0">“Desenvolvi websites institucionais em HTML/CSS/JS para clientes da My Hype, do layout no Figma até a página publicada.”</p>
+    </div>
+    <p>Se não tem métrica, use escopo: quantidade de telas, tipo de cliente, canal (telefone, chat, remoto), ferramenta (Jira, SLA, SSH). Escopo é melhor do que adjetivo.</p>
+    <p>Soft skills (liderança, estratégia, didática) só entram se o bullet mostrar o ato: “expliquei o fluxo para o time”, “priorizei tickets por SLA”, “padronizei o template”.</p>
+
+    <h3>Como apresentar cada seção no seu caso</h3>
+    <table>
+      <thead><tr><th>Seção</th><th>Faça</th><th>Não faça</th></tr></thead>
+      <tbody>
+        <tr><td>Headline</td><td>Front-End | UX/UI | HTML CSS JS React Figma | remoto</td><td>Só UX &amp; UI Designer, ou lista de 12 qualidades pessoais</td></tr>
+        <tr><td>Sobre</td><td>Dev primeiro; TI e atendimento como origem da escuta</td><td>Abrir com “sou comunicativo e tenho talento em liderança”</td></tr>
+        <tr><td>My Hype</td><td>Título: Desenvolvedor Front-End e UX/UI Designer</td><td>Deixar só UX se você quer vaga de código</td></tr>
+        <tr><td>Zucchetti / Kiper / Saga / Nextip</td><td>Manter. São prova de usuário real, SLA e comunicação</td><td>Apagar TI. Recrutador de produto valoriza quem já falou com cliente</td></tr>
+        <tr><td>Formação UNIVAG</td><td>Nome oficial do curso + situação (completo / cursando / trancado)</td><td>“Sistema de Informção, Tecnologia em TI / Sistemas da Informação”</td></tr>
+        <tr><td>Certificados</td><td>Imagine School + certificado UX/UI com PDF e credencial</td><td>Módulo sem carga, data, instituição ou arquivo</td></tr>
+        <tr><td>Habilidades</td><td>Pinar Front-End, UX, UI/Figma. Apagar preposições e rede</td><td>50 tags para “aparecer em tudo”. O LinkedIn dilui o ranque</td></tr>
+        <tr><td>Atividade</td><td>Postar decisão de UI ou Front-End dos seus projetos</td><td>Só compartilhar frase motivacional ou pedir emprego</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout keep">
+      <p><strong>Home office, sem soar amador.</strong> Troque “ama trabalhar no ambiente do lar” por uma linha no Sobre e no Open to Work: disponível para modelo remoto, com rotina, comunicação assíncrona e entregas por sprint. Recrutador brasileiro filtra “Remote” e “Híbrido”. Palavra-chave: remoto — não “lar”.</p>
+    </div>
+
+    <h2>5. Textos prontos para colar</h2>
+    <p>Copie, ajuste números e nomes de projeto, e cole no LinkedIn. Os trechos entre colchetes são para preencher com fato real — não invente métrica.</p>
+
+    <h3>Headline</h3>
+    <div class="copy">
+      <div class="label">Opção A — busca Front-End</div>
+      <p><strong>Desenvolvedor Front-End | UX/UI Designer | HTML · CSS · JavaScript · React · Figma | Sites e portfólios | Aberto a remoto</strong></p>
+      <div class="label" style="margin-top:10pt">Opção B — mais curta</div>
+      <p style="margin:0"><strong>Front-End Developer &amp; UX/UI Designer | Interfaces web, sites e portfólios | Curitiba · Remoto</strong></p>
+    </div>
+
+    <h3>Sobre — versão recomendada</h3>
+    <p class="meta">As 3 primeiras linhas são as únicas visíveis antes de “ver mais”. Não abra com soft skills.</p>
+    <div class="copy">
+      <div class="label">Colar na seção Sobre</div>
+      <p>Olá, eu sou o Jorge.</p>
+      <p>Sou desenvolvedor Front-End com certificação em UX/UI Design. Construo websites, projetos e portfólios com foco em clareza, usabilidade e uma interface que a pessoa entende sem manual.</p>
+      <p>Antes de programar telas, trabalhei anos com atendimento ao cliente e suporte de TI. Levo daqui três hábitos: escutar o usuário, diagnosticar o problema certo e explicar a solução com didática — no time e com o cliente.</p>
+      <p><strong>Como entrego</strong><br />
+      • Front-End: HTML, CSS, JavaScript/TypeScript e React<br />
+      • UX/UI: fluxos, wireframes e protótipos no Figma<br />
+      • Produto: sites institucionais, landing pages e portfólios, com atenção a layout responsivo</p>
+      <p><strong>Como colaboro</strong><br />
+      Comunico com clareza, gosto de trocar ideias, aprendo rápido e mantenho o foco até a entrega. Liderança, para mim, é organizar o trabalho e ajudar o time a decidir — não é cargo.</p>
+      <p style="margin:0">Busco vagas e projetos de Front-End e UX/UI, inclusive em modelo remoto. Se você precisa de alguém que une interface e código, vamos conversar.</p>
+    </div>
+
+    <p class="meta"><strong>Texto atual (público), para substituir:</strong> “Sou bastante comunicativo. Aberto a novas ideias com empatia. Talento em liderança, bem como facilidade de aprendizagem e trabalho em equipe. Tenho admiração em ouvir e aprender, além de opinar sobre os assuntos relacionados à gestão do trabalho como um time. Estou à disposição para rede de contatos, compartilhar de conhecimento, participar de projetos e oportunidades de trabalho.”</p>
+
+    <h3>My Hype — cargo e descrição</h3>
+    <div class="copy">
+      <div class="label">Título sugerido (em vez de só UX &amp; UI Designer)</div>
+      <p><strong>Desenvolvedor Front-End e UX/UI Designer</strong></p>
+      <div class="label">Sobre o cargo</div>
+      <p>Atuação em produto digital: design de interface, Front-End e apoio à construção da startup — templates, websites e fluxo da marca.</p>
+      <ul>
+        <li>Desenho interfaces e templates no Figma para produtos e serviços digitais</li>
+        <li>Desenvolvo websites para a marca e para clientes, do layout à página publicada</li>
+        <li>Organizo o workflow de marketing digital e processos internos da operação</li>
+        <li>Dou suporte técnico à construção da startup, da ideia à entrega</li>
+      </ul>
+      <p class="meta" style="margin:0">Complete com fato: quantos sites, qual stack (React? HTML/CSS puro?), se há protótipo no ar. Se o cargo oficial na empresa for Designer, você pode manter o título da empresa e colocar o título “público” no headline.</p>
+    </div>
+
+    <div class="two">
+      <div class="box">
+        <h3 style="margin-top:0">Zucchetti C4 — reframe</h3>
+        <p>Assistente de atendimento ao cliente — suporte ao usuário final do software, por telefone.</p>
+        <ul>
+          <li>Atendi demandas de uso do sistema, traduzindo dúvida do cliente em passo técnico</li>
+          <li>Orientei configurações e boas práticas para melhorar desempenho e qualidade da gestão no software</li>
+        </ul>
+        <p class="meta">Não chame isso de “UX Designer”. Chame de experiência com usuário real — isso alimenta UX de verdade.</p>
+      </div>
+      <div class="box">
+        <h3 style="margin-top:0">Kiper — o texto mais forte de TI</h3>
+        <p>Especialista em suporte ao usuário — Florianópolis.</p>
+        <ul>
+          <li>Suporte remoto: rede, túnel SSH em Linux e roteador de banda larga do cliente</li>
+          <li>Fila omnichannel (telefone, e-mail, chat), troubleshooting e registro no Jira</li>
+          <li>Priorização por SLA e plantão de sobreaviso</li>
+        </ul>
+        <p class="meta">Esse bloco prova Jira, SLA, Linux e comunicação sob pressão. Enxugue a gramática (“as configuração”) e mantenha as ferramentas.</p>
+      </div>
+    </div>
+
+    <h3>Grupo Saga e Nextip</h3>
+    <p>Mantenha os cargos. Enxugue para 3–5 bullets cada. Saga: atendimento e análise de sistemas de TI, VoIP, Help Desk, suporte a colaboradores e apoio à equipe de campo (Cuiabá). Nextip: instalação e manutenção, redes, banda larga e link dedicado, roteadores Wi-Fi, Help Desk e monitoramento de VoIP. Ferramentas vão no bullet; adjetivos (“dedicado”, “qualidade”) saem se não tiverem escopo.</p>
+
+    <h2>6. Habilidades, formação e certificados</h2>
+    <table>
+      <thead><tr><th>Ação</th><th>Itens</th><th>Por quê</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Pinar (top 3)</td>
+          <td>Front-End Development · User Experience (UX) · UI Design ou Figma</td>
+          <td>É o que o recrutador busca na vaga que você quer</td>
+        </tr>
+        <tr>
+          <td>Manter (12–20)</td>
+          <td>HTML5, CSS, JavaScript, React (se usar), Figma, Jira, Customer Service, Technical Support, Teamwork</td>
+          <td>Stack + diferencial de atendimento, sem inflar</td>
+        </tr>
+        <tr>
+          <td>Apagar agora</td>
+          <td>aos, com, dos, sou, meio, modo, titanium, reporter</td>
+          <td>Não são skills. Parecem erro de importação e queimam credibilidade</td>
+        </tr>
+        <tr>
+          <td>Rebaixar (não pinar)</td>
+          <td>VoIP, roteador, Wi-Fi, SSH, link dedicado, registrar functions</td>
+          <td>São verdade, mas puxam busca de suporte N1, não de Dev</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="two">
+      <div class="box">
+        <h3 style="margin-top:0">Formação acadêmica</h3>
+        <p><strong>UNIVAG — Centro Universitário</strong></p>
+        <p>Curso: [nome oficial: ex. Tecnologia em Sistemas de Informação]</p>
+        <p>Status: [Concluído / Cursando / Trancado] · [ano–ano]</p>
+        <p class="meta">O título público hoje mistura “Sistema de Informção” com “Tecnologia em TI / Sistemas da Informação”. Use o nome do diploma. Se não concluiu, seja literal. Mentira de formação é desqualificante.</p>
+      </div>
+      <div class="box">
+        <h3 style="margin-top:0">Licenças e certificados</h3>
+        <p>Imagine School — Front-End Módulo 1 · 70h · jun 2019</p>
+        <p>Imagine School — Front-End Módulo 2 · 70h · jun 2020</p>
+        <p>[Instituição] — Certificação UX/UI Designer · [mês/ano] · anexar PDF e URL da credencial</p>
+        <p class="meta">Sem o certificado de UX/UI no perfil, o headline “UX/UI Designer” fica sem prova. O LinkedIn mostra o selo da escola se a credencial for adicionada certo.</p>
+      </div>
+    </div>
+
+    <h3>Featured e atividade</h3>
+    <p>Featured, nesta ordem: 1) link do GitHub ou portfólio; 2) um site seu no ar (mesmo projeto de estudo, se estiver publicado); 3) print ou protótipo Figma de uma tela; 4) PDF do certificado UX/UI.</p>
+    <p>Atividade: um post por semana, 5–8 linhas, uma decisão (“por que o formulário de busca ficou acima da galeria”, “como o atendimento mudou o microcopy”). Comente 5 perfis de Front-End/UX de Curitiba por semana. Isso substitui “estou à disposição para networking”.</p>
+
+    <h2>7. Plano de 14 dias</h2>
+    <div class="callout">
+      <p><strong>Ordem que muda a nota mais rápido.</strong> Headline e Sobre hoje. Skills pinadas e lixo apagado amanhã. Featured e título da My Hype nesta semana. Certificado UX/UI e 4 posts na semana seguinte. Não comece pelo banner.</p>
+    </div>
+    <table>
+      <thead><tr><th>Quando</th><th>Ação</th><th>Pronto quando</th></tr></thead>
+      <tbody>
+        <tr><td>Dia 1</td><td>Trocar headline (opção A) e colar o Sobre novo</td><td>As 3 primeiras linhas do Sobre falam Front-End + UX/UI + TI</td></tr>
+        <tr><td>Dia 1–2</td><td>Apagar skills lixo; pinar Front-End, UX, Figma/UI</td><td>Top 3 skills = papel alvo. Lista total ≤ 20</td></tr>
+        <tr><td>Dia 3</td><td>Reescrever My Hype em bullets; ajustar título do cargo</td><td>Dá para copiar 4 linhas para um ATS</td></tr>
+        <tr><td>Dia 4–5</td><td>Enxugar Zucchetti, Kiper, Saga, Nextip. Corrigir UNIVAG</td><td>Cada cargo com 3–5 bullets. Formação com nome oficial</td></tr>
+        <tr><td>Dia 6–7</td><td>Featured: GitHub + 1 projeto no ar + certificado UX/UI</td><td>Visitante vê prova visual sem rolar o perfil inteiro</td></tr>
+        <tr><td>Dias 8–14</td><td>Open to Work (Front-End, UX/UI, remoto). 2 posts + 1 pedido de recomendação</td><td>Perfil ativo; 2 recomendações no total, se possível</td></tr>
+      </tbody>
+    </table>
+
+    <div class="two">
+      <div class="box">
+        <h3 style="margin-top:0">Open to Work — filtros</h3>
+        <p>Cargos: Desenvolvedor Front-End, Web Developer, UX/UI Designer</p>
+        <p>Locais: Curitiba e Remoto</p>
+        <p>Tipos: CLT, PJ, freelance de projeto (se aceitar)</p>
+        <p>Visibilidade: recrutadores apenas, se ainda estiver alocado; público, se estiver buscando ativo.</p>
+      </div>
+      <div class="box">
+        <h3 style="margin-top:0">O que não precisa fazer agora</h3>
+        <p>Banner ilustrado, nome com emojis, selo Premium, 80 skills, vídeo de apresentação.</p>
+        <p>Liderança e estratégia só voltam ao Sobre quando houver um bullet que as prove (mentoria, priorização, dono de entrega).</p>
+        <p>Se a pós em Engenharia de Software (Anhanguera) for sua, ela vai em Formação — não só no feed. Se for post de outra pessoa, ignore.</p>
+      </div>
+    </div>
+
+    <h3>Depois desta rodada, a nota sobe se</h3>
+    <table>
+      <thead><tr><th>Sinal</th><th>De</th><th>Para</th></tr></thead>
+      <tbody>
+        <tr><td>Busca do recrutador</td><td>UX designer / suporte técnico</td><td>Front-End + UX/UI + React/HTML</td></tr>
+        <tr><td>Primeiras 3 linhas</td><td>Sou comunicativo</td><td>Dev Front-End certificado em UX/UI</td></tr>
+        <tr><td>Prova</td><td>Texto e tags</td><td>Projeto no Featured + certificado + bullets</td></tr>
+        <tr><td>Diferencial</td><td>Lista de virtudes</td><td>Atendimento e TI a serviço do produto</td></tr>
+      </tbody>
+    </table>
+
+    <div class="foot">
+      <p>Relatório elaborado a partir do recorte público do perfil LinkedIn de Jorge R. Barbosa (Curitiba, PR), em 3 de setembro de 2026. Fonte: <a href="https://www.linkedin.com/in/jorge-r-barbosa-aabb0417b/">linkedin.com/in/jorge-r-barbosa-aabb0417b</a>. Notas são julgamento editorial, não métricas oficiais do LinkedIn. Textos prontos devem ser ajustados com fatos reais do autor antes da publicação.</p>
+    </div>
+  </article>
+</body>
+</html>

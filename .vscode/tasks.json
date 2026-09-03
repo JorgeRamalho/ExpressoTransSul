@@ -2,14 +2,26 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Live Server (build + servir dist)",
+      "label": "Build watch (Live Server)",
       "type": "npm",
-      "script": "live:full",
-      "problemMatcher": [],
+      "script": "build:watch",
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "vite",
+        "pattern": { "regexp": "^.*$" },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "building|transforming",
+          "endsPattern": "built in|watching for file changes"
+        }
+      },
       "presentation": {
-        "reveal": "always",
+        "reveal": "silent",
         "panel": "dedicated",
-        "focus": true
+        "showReuseMessage": false
+      },
+      "runOptions": {
+        "runOn": "folderOpen"
       },
       "group": {
         "kind": "build",
@@ -17,7 +29,7 @@
       }
     },
     {
-      "label": "Live Server com auto-rebuild",
+      "label": "Live Server completo (terminal)",
       "type": "npm",
       "script": "live:watch",
       "problemMatcher": [],

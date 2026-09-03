@@ -62,25 +62,33 @@ export async function lookupCep(cep: string): Promise<CepLookupResult> {
 }
 
 export async function validateCpfRemote(cpf: string): Promise<CpfValidationResult> {
-  const response = await fetch(`${API_BASE}/api/cpf/validate`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ cpf: stripDigits(cpf) }),
-  });
-  return parseJson<CpfValidationResult>(response);
+  try {
+    const response = await fetch(`${API_BASE}/api/cpf/validate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ cpf: stripDigits(cpf) }),
+    });
+    return parseJson<CpfValidationResult>(response);
+  } catch {
+    throw new Error('API offline');
+  }
 }
 
 export async function registerPassenger(payload: RegisterPassengerPayload): Promise<RegisterPassengerResponse> {
-  const response = await fetch(`${API_BASE}/api/passengers/register`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
-  });
-  const data = await parseJson<RegisterPassengerResponse>(response);
-  if (!response.ok && data.success !== false) {
-    return { success: false, message: 'Não foi possível concluir o cadastro.' };
+  try {
+    const response = await fetch(`${API_BASE}/api/passengers/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const data = await parseJson<RegisterPassengerResponse>(response);
+    if (!response.ok && data.success !== false) {
+      return { success: false, message: 'Não foi possível concluir o cadastro.' };
+    }
+    return data;
+  } catch {
+    throw new Error('API offline');
   }
-  return data;
 }
 
 export async function checkApiHealth(): Promise<boolean> {

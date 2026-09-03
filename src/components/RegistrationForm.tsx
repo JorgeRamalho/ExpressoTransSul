@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { User, MapPin, Phone, Mail, CreditCard, Shield, CheckCircle, Loader2, AlertCircle } from 'lucide-react';
 import { useRegistrationValidation } from '../hooks/useRegistrationValidation';
 import { registerPassenger, checkApiHealth } from '../services/registrationApi';
+import { FIRST_TRIP_PROMO } from '../data/promoCampaign';
 import './RegistrationForm.css';
 
 interface FormData {
@@ -271,7 +272,7 @@ export function RegistrationForm() {
       setSubmitted(true);
       setTimeout(() => navigate('/area-cliente'), 2000);
     } catch {
-      setSubmitError('Erro de conexão com a API. Inicie o servidor com npm run api.');
+      setSubmitError('Erro de conexão com a API. Execute .\\start-dev.ps1 ou npm run dev:full.');
     } finally {
       setSubmitting(false);
     }
@@ -282,7 +283,7 @@ export function RegistrationForm() {
       <div className="registration-success">
         <CheckCircle size={64} />
         <h2>Cadastro realizado com sucesso!</h2>
-        <p>Redirecionando para sua área do cliente...</p>
+        <p>Seu cupom {FIRST_TRIP_PROMO.code} já está ativo para a primeira viagem. Redirecionando para sua área do cliente...</p>
       </div>
     );
   }

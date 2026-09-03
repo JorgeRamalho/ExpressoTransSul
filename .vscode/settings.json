@@ -5,10 +5,17 @@
   "liveServer.settings.ignoreFiles": [
     ".vscode/**",
     "node_modules/**",
+    ".git/**",
+    ".tools/**",
     "src/**",
-    ".git/**"
+    "server/**",
+    "tests/**",
+    "docs/**"
   ],
   "liveServer.settings.donotShowInfoMsg": true,
   "liveServer.settings.donotVerifyTags": true,
-  "liveServer.settings.fullReload": true
+  "liveServer.settings.fullReload": true,
+  "terminal.integrated.env.windows": {
+    "PATH": "${workspaceFolder}\\.tools\\node;${env:PATH}"
+  }
 }

@@ -18,28 +18,27 @@
   </head>
   <body>
     <div id="root"></div>
-    <!-- Entrada Vite: nao abrir este arquivo com Live Server. Use Go Live (raiz /dist) ou npm run live -->
-    <script src="/cep-fetch-patch.js"></script>
-    <script type="module" src="/src/main.tsx"></script>
+    <script id="vite-dev-entry" type="module" src="/src/main.tsx"></script>
     <script>
-      window.addEventListener('DOMContentLoaded', function () {
-        setTimeout(function () {
-          var root = document.getElementById('root');
-          if (root && !root.hasChildNodes()) {
-            root.innerHTML =
-              '<div style="font-family:system-ui,sans-serif;max-width:36rem;margin:3rem auto;padding:1.5rem;line-height:1.5">' +
-              '<h1 style="font-size:1.25rem">Live Server: use a pasta <code>dist</code></h1>' +
-              '<p>Este <code>index.html</code> e a entrada do Vite e nao roda no Live Server.</p>' +
-              '<ol>' +
-              '<li>Botao direito em <code>dist/index.html</code> &rarr; Open with Live Server</li>' +
-              '<li>Ou use o botao <strong>Go Live</strong> (raiz ja aponta para <code>/dist</code>)</li>' +
-              '<li>Ou no terminal: <code>npm run live</code></li>' +
-              '</ol>' +
-              '<p>Para desenvolvimento com hot reload: <code>npm run dev</code></p>' +
-              '</div>';
-          }
-        }, 800);
-      });
+      (function () {
+        var port = location.port;
+        if (port === "5173" || port === "4173") return;
+        if (!document.getElementById("vite-dev-entry")) return;
+        var path = location.pathname.replace(/\\/g, "/");
+        if (/\/dist(\/|$)/i.test(path)) return;
+        var base = location.origin + path.replace(/\/index\.html$/i, "").replace(/\/?$/, "/");
+        var qs = location.search ? location.search + "&" : "?";
+        location.replace(base + "dist/index.html" + qs + "_=" + Date.now() + location.hash);
+      })();
+    </script>
+    <script>
+      (function () {
+        var port = location.port;
+        if (port === "5173" || port === "4173") return;
+        var script = document.createElement("script");
+        script.src = "./cep-fetch-patch.js";
+        document.body.appendChild(script);
+      })();
     </script>
   </body>
 </html>

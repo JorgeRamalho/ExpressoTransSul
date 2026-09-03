@@ -1,0 +1,374 @@
+.promo-banner {
+  position: relative;
+  z-index: 2;
+  margin-top: -1.5rem;
+  padding-bottom: 1.5rem;
+  background:
+    radial-gradient(ellipse at 78% 20%, rgba(232, 93, 4, 0.18) 0%, transparent 42%),
+    linear-gradient(180deg, #05080f 0%, #07111f 100%);
+}
+
+.promo-banner__stage {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(280px, 1.05fr) minmax(240px, 0.7fr) minmax(260px, 0.95fr);
+  align-items: center;
+  min-height: 420px;
+  overflow: hidden;
+  background:
+    linear-gradient(105deg, #05080f 0%, #071322 38%, rgba(10, 77, 140, 0.35) 68%, transparent 100%);
+}
+
+.promo-banner__copy {
+  position: relative;
+  z-index: 2;
+  padding: 3.5rem 0 6.5rem;
+  padding-left: max(1.5rem, calc((100vw - var(--max-width)) / 2 + 1.5rem));
+  padding-right: 1.5rem;
+  max-width: 36rem;
+}
+
+.promo-banner__eyebrow {
+  display: inline-block;
+  margin-bottom: 1rem;
+  padding: 0.35rem 0.9rem;
+  border: 1px solid rgba(255, 183, 3, 0.35);
+  border-radius: var(--radius-full);
+  background: rgba(255, 183, 3, 0.12);
+  color: var(--color-accent-gold);
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.promo-banner__copy h2 {
+  color: white;
+  font-size: clamp(1.85rem, 4vw, 2.85rem);
+  letter-spacing: -0.03em;
+  margin-bottom: 1rem;
+}
+
+.promo-banner__copy p {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.promo-banner__offer {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 2rem 1rem 6rem;
+}
+
+.promo-banner__badge {
+  width: 188px;
+  height: 188px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 28%, #ff9a4a 0%, var(--color-secondary) 58%, #c24600 100%);
+  box-shadow:
+    0 0 0 10px rgba(232, 93, 4, 0.2),
+    0 18px 40px rgba(0, 0, 0, 0.45);
+  color: white;
+  text-align: center;
+  animation: promo-badge-glow 2.8s ease-in-out infinite;
+}
+
+.promo-banner__badge-value {
+  font-family: var(--font-display);
+  font-size: 3.4rem;
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+}
+
+.promo-banner__badge-off {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.promo-banner__badge-hint {
+  margin-top: 0.2rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+.promo-banner__coupon {
+  width: min(100%, 280px);
+  padding: 1rem 1.15rem;
+  border-radius: 1.15rem;
+  background: rgba(7, 12, 22, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  text-align: center;
+  color: white;
+}
+
+.promo-banner__fomo {
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.35;
+  color: var(--color-accent-gold);
+  margin-bottom: 0.45rem;
+}
+
+.promo-banner__code {
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+}
+
+.promo-banner__code strong {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  letter-spacing: 0.04em;
+}
+
+.promo-banner__deadline {
+  display: inline-block;
+  margin-top: 0.55rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.1);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.promo-banner__photo {
+  position: relative;
+  height: 100%;
+  min-height: 420px;
+}
+
+.promo-banner__photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 55% 20%;
+  mask-image: linear-gradient(90deg, transparent 0%, #000 18%, #000 100%);
+}
+
+.promo-banner__photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, #05080f 0%, transparent 28%),
+    linear-gradient(180deg, transparent 62%, rgba(5, 8, 15, 0.55) 100%);
+  pointer-events: none;
+}
+
+.promo-banner__cta-card {
+  position: relative;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-top: -4.25rem;
+  padding: 1.35rem 1.6rem;
+  background: white;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2xl);
+  box-shadow: 0 22px 50px rgba(15, 23, 42, 0.18);
+}
+
+.promo-banner__cta-copy h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+}
+
+.promo-banner__steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem 1rem;
+  list-style: none;
+}
+
+.promo-banner__steps li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.promo-banner__step-index {
+  width: 1.35rem;
+  height: 1.35rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: white;
+  font-size: 0.7rem;
+  font-family: var(--font-display);
+}
+
+.promo-banner__cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+.promo-banner__copy-btn {
+  min-width: 13.5rem;
+}
+
+.promo-banner__legal {
+  margin-top: 0.85rem;
+  color: rgba(255, 255, 255, 0.48);
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+.cadastro-promo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0 auto 1.5rem;
+  max-width: 720px;
+  padding: 1rem 1.15rem;
+  border-radius: var(--radius-xl);
+  background: linear-gradient(135deg, #071322 0%, var(--color-primary-dark) 100%);
+  color: white;
+  border: 1px solid rgba(255, 183, 3, 0.25);
+}
+
+.cadastro-promo strong {
+  color: var(--color-accent-gold);
+  font-family: var(--font-display);
+  letter-spacing: 0.04em;
+}
+
+.cadastro-promo p {
+  font-size: 0.95rem;
+  opacity: 0.92;
+}
+
+.cadastro-promo__badge {
+  flex-shrink: 0;
+  width: 72px;
+  height: 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #ff9a4a, var(--color-secondary));
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 1;
+}
+
+.cadastro-promo__badge span:first-child {
+  font-size: 1.25rem;
+}
+
+.cadastro-promo__badge span:last-child {
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+}
+
+@keyframes promo-badge-glow {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 10px rgba(232, 93, 4, 0.2), 0 18px 40px rgba(0, 0, 0, 0.45); }
+  50% { transform: scale(1.03); box-shadow: 0 0 0 14px rgba(232, 93, 4, 0.28), 0 22px 46px rgba(0, 0, 0, 0.5); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .promo-banner__badge {
+    animation: none;
+  }
+}
+
+@media (max-width: 1100px) {
+  .promo-banner__stage {
+    grid-template-columns: 1fr 0.9fr;
+    grid-template-areas:
+      'copy photo'
+      'offer photo';
+  }
+
+  .promo-banner__copy { grid-area: copy; padding-bottom: 1.5rem; }
+  .promo-banner__offer { grid-area: offer; padding-bottom: 6rem; }
+  .promo-banner__photo { grid-area: photo; }
+}
+
+@media (max-width: 768px) {
+  .promo-banner {
+    margin-top: 0;
+  }
+
+  .promo-banner__stage {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'photo'
+      'copy'
+      'offer';
+    min-height: auto;
+  }
+
+  .promo-banner__copy {
+    padding: 1.75rem 1.25rem 0.5rem;
+    max-width: none;
+  }
+
+  .promo-banner__offer {
+    padding: 1rem 1.25rem 5.5rem;
+  }
+
+  .promo-banner__photo {
+    min-height: 280px;
+  }
+
+  .promo-banner__photo img {
+    mask-image: linear-gradient(180deg, #000 0%, #000 72%, transparent 100%);
+  }
+
+  .promo-banner__photo::after {
+    background: linear-gradient(180deg, transparent 40%, #05080f 100%);
+  }
+
+  .promo-banner__cta-card {
+    flex-direction: column;
+    align-items: stretch;
+    margin-top: -3.5rem;
+    padding: 1.25rem;
+  }
+
+  .promo-banner__cta-actions {
+    justify-content: stretch;
+  }
+
+  .promo-banner__cta-actions .btn {
+    flex: 1;
+  }
+
+  .cadastro-promo {
+    flex-direction: column;
+    text-align: center;
+  }
+}
