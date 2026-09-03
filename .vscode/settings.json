@@ -2,10 +2,13 @@
   "liveServer.settings.root": "/dist",
   "liveServer.settings.port": 5500,
   "liveServer.settings.host": "127.0.0.1",
-  "liveServer.settings.CustomBrowser": "chrome",
   "liveServer.settings.ignoreFiles": [
     ".vscode/**",
     "node_modules/**",
-    "src/**"
-  ]
+    "src/**",
+    ".git/**"
+  ],
+  "liveServer.settings.donotShowInfoMsg": true,
+  "liveServer.settings.donotVerifyTags": true,
+  "liveServer.settings.fullReload": true
 }

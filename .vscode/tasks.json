@@ -1,6 +1,21 @@
-{
+﻿{
   "version": "2.0.0",
   "tasks": [
+    {
+      "label": "Live Server (build + servir dist)",
+      "type": "npm",
+      "script": "live:full",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": true
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
     {
       "label": "Live Server com auto-rebuild",
       "type": "npm",
@@ -10,10 +25,17 @@
         "reveal": "always",
         "panel": "dedicated",
         "focus": true
-      },
-      "group": {
-        "kind": "build",
-        "isDefault": false
+      }
+    },
+    {
+      "label": "Vite Dev Server",
+      "type": "npm",
+      "script": "dev",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": true
       }
     }
   ]

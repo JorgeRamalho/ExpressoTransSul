@@ -25,10 +25,10 @@ test.describe('ExpressoTransSul - SEO', () => {
 
   test('páginas internas devem ter títulos descritivos', async ({ page }) => {
     const pages = [
-      { path: '/horarios', title: /Horários|Passagens/i },
-      { path: '/companhias', title: /Companhias|ExpressoTransSul/i },
-      { path: '/terminais', title: /Terminais|ExpressoTransSul/i },
-      { path: '/cadastro', title: /ExpressoTransSul/i },
+      { path: '/#/horarios', title: /Horários|Passagens/i },
+      { path: '/#/companhias', title: /Companhias|ExpressoTransSul/i },
+      { path: '/#/terminais', title: /Terminais|ExpressoTransSul/i },
+      { path: '/#/cadastro', title: /ExpressoTransSul/i },
     ];
 
     for (const { path, title } of pages) {
@@ -82,22 +82,22 @@ test.describe('ExpressoTransSul - Usabilidade e Navegação', () => {
   });
 
   test('cadastro multi-step deve funcionar', async ({ page }) => {
-    await page.goto('/cadastro');
+    await page.goto('/#/cadastro');
 
     await page.locator('#nome').fill('Maria');
     await page.locator('#sobrenome').fill('Santos');
+    await page.locator('#cpf').fill('529.982.247-25');
+    await page.locator('#dataNascimento').fill('1990-05-15');
     await page.getByRole('button', { name: 'Continuar' }).click();
 
     await page.locator('#email').fill('maria@test.com');
     await page.locator('#celular').fill('(51) 99999-9999');
     await page.getByRole('button', { name: 'Continuar' }).click();
 
-    await page.locator('#cep').fill('90000-000');
-    await page.locator('#logradouro').fill('Rua Teste');
+    await page.locator('#cep').fill('90010-000');
+    await page.getByRole('button', { name: 'Buscar CEP' }).click();
+    await expect(page.getByText(/ViaCEP|BrasilAPI/i)).toBeVisible({ timeout: 10000 });
     await page.locator('#numero').fill('123');
-    await page.locator('#bairro').fill('Centro');
-    await page.locator('#cidade').fill('Porto Alegre');
-    await page.locator('#estado').selectOption('RS');
     await page.getByRole('button', { name: 'Continuar' }).click();
 
     await page.locator('#senha').fill('senha12345');
@@ -105,11 +105,11 @@ test.describe('ExpressoTransSul - Usabilidade e Navegação', () => {
     await page.locator('input[type="checkbox"]').first().check();
     await page.getByRole('button', { name: /Finalizar Cadastro/i }).click();
 
-    await expect(page.getByText(/Cadastro realizado com sucesso/i)).toBeVisible({ timeout: 5000 });
+    await expect(page.getByText(/Cadastro realizado com sucesso/i)).toBeVisible({ timeout: 10000 });
   });
 
   test('área do cliente demo login funciona', async ({ page }) => {
-    await page.goto('/area-cliente');
+    await page.goto('/#/area-cliente');
     await page.getByRole('button', { name: /Entrar \(Demo\)/i }).click();
     await expect(page.getByText(/Olá/i)).toBeVisible();
     await expect(page.getByText(/Viagens Ativas/i)).toBeVisible();
@@ -138,7 +138,7 @@ test.describe('ExpressoTransSul - Responsividade', () => {
 
   test('dashboard deve adaptar em tablet', async ({ page }) => {
     await page.setViewportSize({ width: 768, height: 1024 });
-    await page.goto('/area-cliente');
+    await page.goto('/#/area-cliente');
     await page.getByRole('button', { name: /Entrar \(Demo\)/i }).click();
     await expect(page.getByText(/Pontos Fidelidade/i)).toBeVisible();
   });
@@ -153,7 +153,7 @@ test.describe('ExpressoTransSul - Identidade Visual e Layout', () => {
   });
 
   test('seção de companhias deve listar empresas do Sul', async ({ page }) => {
-    await page.goto('/companhias');
+    await page.goto('/#/companhias');
 
     await expect(page.getByText('Viação Catarinense')).toBeVisible();
     await expect(page.locator('h3').filter({ hasText: 'Grupo Reunidas' }).first()).toBeVisible();
@@ -162,7 +162,7 @@ test.describe('ExpressoTransSul - Identidade Visual e Layout', () => {
   });
 
   test('terminais devem mostrar status ao vivo', async ({ page }) => {
-    await page.goto('/terminais');
+    await page.goto('/#/terminais');
     await expect(page.getByText(/Status ao Vivo/i)).toBeVisible();
     await expect(page.getByText(/Estação Rodoviária de Porto Alegre/i)).toBeVisible();
   });
@@ -186,7 +186,7 @@ test.describe('ExpressoTransSul - Funcionalidade', () => {
   });
 
   test('resultados devem exibir opções de viagem', async ({ page }) => {
-    await page.goto('/resultados?origem=Porto+Alegre+-+RS&destino=Florianópolis+-+SC&data=2026-09-15');
+    await page.goto('/#/resultados?origem=Porto+Alegre+-+RS&destino=Florianópolis+-+SC&data=2026-09-15');
     await expect(page.getByText(/opções encontradas/i)).toBeVisible();
     await expect(page.getByRole('link', { name: /Selecionar/i }).first()).toBeVisible();
   });
