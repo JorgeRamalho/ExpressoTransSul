@@ -5,7 +5,7 @@ import { FIRST_TRIP_PROMO, persistFirstTripCoupon } from '../data/promoCampaign'
 import { assetUrl } from '../lib/assetUrl';
 import './PromoBanner.css';
 
-const PASSENGER_IMAGE = assetUrl('images/promo-passenger-primeira-viagem.png');
+const PASSENGER_IMAGE = assetUrl('images/promo-boarding-primeira-viagem.png');
 
 const steps = [
   { icon: UserPlus, label: 'Cadastre-se grátis' },
@@ -65,7 +65,7 @@ export function PromoBanner() {
         <div className="promo-banner__photo">
           <img
             src={PASSENGER_IMAGE}
-            alt="Passageiro sorrindo em viagem de ônibus pelo Sul do Brasil"
+            alt="Passageiros felizes embarcando em um ônibus da ExpressoTransSul"
             width={640}
             height={853}
             loading="lazy"

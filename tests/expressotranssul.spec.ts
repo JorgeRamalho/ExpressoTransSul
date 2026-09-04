@@ -138,11 +138,22 @@ test.describe('ExpressoTransSul - Usabilidade e Navegação', () => {
     await expect(page.getByText(/Cadastro realizado com sucesso/i)).toBeVisible({ timeout: 15000 });
   });
 
-  test('área do cliente demo login funciona', async ({ page }) => {
+  test('área do cliente exibe login com botão Entrar', async ({ page }) => {
     await page.goto('/#/area-cliente');
-    await page.getByRole('button', { name: /Entrar \(Demo\)/i }).click();
-    await expect(page.getByText(/Olá/i)).toBeVisible();
-    await expect(page.getByText(/Viagens Ativas/i)).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Área do Cliente/i }).first()).toBeVisible();
+    await expect(page.getByRole('button', { name: /^Entrar$/i })).toBeVisible();
+    await expect(page.getByRole('button', { name: /Entrar \(Demo\)/i })).toHaveCount(0);
+    await expect(page.locator('#login-email')).toBeVisible();
+    await expect(page.locator('#login-senha')).toBeVisible();
+  });
+
+  test('área do cliente rejeita login inválido', async ({ page }) => {
+    await page.goto('/#/area-cliente');
+    await page.locator('#login-email').fill('naoexiste@test.com');
+    await page.locator('#login-senha').fill('senhaerrada');
+    await page.getByRole('button', { name: /^Entrar$/i }).click();
+    await expect(page.getByRole('alert')).toBeVisible();
+    await expect(page.getByText(/Olá/i)).toHaveCount(0);
   });
 });
 
@@ -161,15 +172,21 @@ test.describe('ExpressoTransSul - Responsividade', () => {
 
     const menuBtn = page.getByRole('button', { name: /Abrir menu/i });
     await menuBtn.click();
-    await expect(page.locator('header nav').getByRole('link', { name: 'Destinos', exact: true })).toBeVisible();
+    await expect(page.locator('header nav').getByRole('link', { name: 'Horários', exact: true })).toBeVisible();
 
     await page.getByRole('button', { name: /Fechar menu/i }).click();
   });
 
   test('dashboard deve adaptar em tablet', async ({ page }) => {
     await page.setViewportSize({ width: 768, height: 1024 });
+    await page.addInitScript(() => {
+      localStorage.setItem('ets_user', JSON.stringify({
+        nome: 'Maria Silva',
+        email: 'maria@test.com',
+        cpf: '529.982.247-25',
+      }));
+    });
     await page.goto('/#/area-cliente');
-    await page.getByRole('button', { name: /Entrar \(Demo\)/i }).click();
     await expect(page.getByText(/Pontos Fidelidade/i)).toBeVisible();
   });
 });
@@ -219,5 +236,58 @@ test.describe('ExpressoTransSul - Funcionalidade', () => {
     await page.goto('/#/resultados?origem=Porto+Alegre+-+RS&destino=Florianópolis+-+SC&data=2026-09-15');
     await expect(page.getByText(/opções encontradas/i)).toBeVisible();
     await expect(page.getByRole('link', { name: /Selecionar/i }).first()).toBeVisible();
+  });
+});
+
+test.describe('ExpressoTransSul - App, linhas diretas e jornada', () => {
+  test('home deve exibir hub do app e linhas diretas', async ({ page }) => {
+    await page.goto('/');
+
+    const hub = page.getByRole('region', { name: /Tudo o que você precisa para embarcar/i });
+    await hub.scrollIntoViewIfNeeded();
+    await expect(hub.getByRole('heading', { name: /Tudo o que você precisa para embarcar/i })).toBeVisible();
+    await hub.getByRole('tab', { name: 'Reservas' }).click();
+    await expect(hub.getByRole('heading', { name: /Reserve o assento/i })).toBeVisible();
+
+    const express = page.getByRole('region', { name: /Linhas entre rotas com uma pausa de 20 minutos/i });
+    await express.scrollIntoViewIfNeeded();
+    await expect(express.getByText(/sem embarque ou desembarque/i).first()).toBeVisible();
+    await expect(express.getByText('Linha Direta').first()).toBeVisible();
+  });
+
+  test('seção de app deve oferecer download', async ({ page }) => {
+    await page.goto('/#/app');
+    await expect(page.getByRole('heading', { name: /Baixe o app e viaje com mais leveza/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: /Baixar no Android/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: /Baixar no iPhone/i })).toBeVisible();
+  });
+
+  test('header deve atalhar para baixar o app', async ({ page }) => {
+    await page.goto('/');
+    await page.getByRole('link', { name: /Baixar o aplicativo ExpressoTransSul/i }).click();
+    await expect(page).toHaveURL(/app/);
+    await expect(page.getByRole('heading', { name: /Leve o ExpressoTransSul no bolso/i })).toBeVisible();
+    await expect(page.getByRole('region', { name: /Tudo o que você precisa para embarcar/i })).toBeVisible();
+  });
+
+  test('promoções, reservas e embarques devem abrir', async ({ page }) => {
+    await page.goto('/#/promocoes');
+    await expect(page.getByRole('heading', { name: /Promoções para embarcar agora/i })).toBeVisible();
+
+    await page.goto('/#/reservas');
+    await expect(page.getByRole('heading', { name: /Escolha o assento/i })).toBeVisible();
+    await page.getByRole('button', { name: 'Assento 03A' }).click();
+    await page.getByRole('button', { name: /Reservar assento 03A/i }).click();
+    await expect(page.getByText(/Assento 03A reservado/i)).toBeVisible();
+
+    await page.goto('/#/embarques');
+    await expect(page.getByRole('heading', { name: /Painel de plataformas/i })).toBeVisible();
+    await expect(page.getByText(/Agora nos terminais/i)).toBeVisible();
+  });
+
+  test('sugestões devem filtrar por clima da viagem', async ({ page }) => {
+    await page.goto('/#/sugestoes');
+    await page.getByRole('tab', { name: /Serra/i }).click();
+    await expect(page.getByRole('heading', { name: /Serra Gaúcha/i })).toBeVisible();
   });
 });

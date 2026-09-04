@@ -11,7 +11,7 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "build:watch": "vite build --watch",
-    "live:serve": "live-server . --port=5500 --host=127.0.0.1 --open=/index.html --ignore=node_modules,.git,.tools,src,server,tests,docs,.vscode,playwright-report,test-results",
+    "live:serve": "concurrently -k -n api,server -c green,magenta \"npm run api\" \"live-server . --port=5500 --host=127.0.0.1 --open=/index.html --ignore=node_modules,.git,.tools,src,server,tests,docs,.vscode,playwright-report,test-results\"",
     "live": "vite build && live-server . --port=5500 --host=127.0.0.1 --open=/index.html --ignore=node_modules,.git,.tools,src,server,tests,docs,.vscode,playwright-report,test-results",
     "live:watch": "vite build && concurrently -k -n build,server -c blue,green \"vite build --watch\" \"live-server . --port=5500 --host=127.0.0.1 --open=/index.html --ignore=node_modules,.git,.tools,src,server,tests,docs,.vscode,playwright-report,test-results\"",
     "live:full": "concurrently -k -n api,build,server -c green,blue,magenta \"npm run api\" \"vite build --watch\" \"live-server . --port=5500 --host=127.0.0.1 --open=/index.html --ignore=node_modules,.git,.tools,src,server,tests,docs,.vscode,playwright-report,test-results\"",

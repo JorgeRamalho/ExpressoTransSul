@@ -212,6 +212,32 @@
     );
   }
 
+  function createSalt() {
+    var bytes = new Uint8Array(16);
+    crypto.getRandomValues(bytes);
+    return Array.from(bytes, function (byte) {
+      return byte.toString(16).padStart(2, '0');
+    }).join('');
+  }
+
+  function hashPassword(password, salt) {
+    var data = new TextEncoder().encode(salt + ':' + password);
+    return crypto.subtle.digest('SHA-256', data).then(function (digest) {
+      return Array.from(new Uint8Array(digest), function (byte) {
+        return byte.toString(16).padStart(2, '0');
+      }).join('');
+    });
+  }
+
+  function authPassenger(passenger) {
+    return {
+      id: passenger.id,
+      nome: passenger.nome + ' ' + passenger.sobrenome,
+      email: passenger.email,
+      cpf: passenger.cpfFormatted,
+    };
+  }
+
   function registerPassengerRequest(body) {
     var cpf = stripDigits(body.cpf);
     var email = String(body.email || '').trim().toLowerCase();
@@ -237,54 +263,83 @@
     if (!body.aceitaTermos) errors.push('É necessário aceitar os termos de uso.');
 
     if (errors.length > 0) {
-      return jsonResponse({ success: false, message: 'Corrija os campos indicados.', errors: errors }, 400);
+      return Promise.resolve(jsonResponse({ success: false, message: 'Corrija os campos indicados.', errors: errors }, 400));
     }
 
     var db = readDb();
     if (db.passengers.some(function (p) { return p.cpf === cpf; })) {
-      return jsonResponse({ success: false, message: 'CPF já cadastrado.' }, 409);
+      return Promise.resolve(jsonResponse({ success: false, message: 'CPF já cadastrado.' }, 409));
     }
     if (db.passengers.some(function (p) { return p.email === email; })) {
-      return jsonResponse({ success: false, message: 'E-mail já cadastrado.' }, 409);
+      return Promise.resolve(jsonResponse({ success: false, message: 'E-mail já cadastrado.' }, 409));
     }
 
-    var id = typeof crypto !== 'undefined' && crypto.randomUUID
-      ? crypto.randomUUID()
-      : 'local-' + Date.now();
+    var salt = createSalt();
+    return hashPassword(password, salt).then(function (passwordHash) {
+      var passenger = {
+        id: typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : 'local-' + Date.now(),
+        createdAt: new Date().toISOString(),
+        nome: String(body.nome).trim(),
+        sobrenome: String(body.sobrenome).trim(),
+        cpf: cpf,
+        cpfFormatted: formatCpf(cpf),
+        email: email,
+        celular: String(body.celular).trim(),
+        cep: formatCep(cep),
+        logradouro: String(body.logradouro).trim(),
+        numero: String(body.numero).trim(),
+        bairro: String(body.bairro).trim(),
+        cidade: String(body.cidade).trim(),
+        estado: String(body.estado).trim(),
+        passwordHash: passwordHash,
+        passwordSalt: salt,
+      };
 
-    var passenger = {
-      id: id,
-      createdAt: new Date().toISOString(),
-      nome: String(body.nome).trim(),
-      sobrenome: String(body.sobrenome).trim(),
-      cpf: cpf,
-      cpfFormatted: formatCpf(cpf),
-      email: email,
-      celular: String(body.celular).trim(),
-      cep: formatCep(cep),
-      logradouro: String(body.logradouro).trim(),
-      numero: String(body.numero).trim(),
-      bairro: String(body.bairro).trim(),
-      cidade: String(body.cidade).trim(),
-      estado: String(body.estado).trim(),
-    };
+      db.passengers.push(passenger);
+      writeDb(db);
 
-    db.passengers.push(passenger);
-    writeDb(db);
-
-    return jsonResponse(
-      {
-        success: true,
-        message: 'Cadastro realizado com sucesso.',
-        passenger: {
-          id: passenger.id,
-          nome: passenger.nome + ' ' + passenger.sobrenome,
-          email: passenger.email,
-          cpf: passenger.cpfFormatted,
+      return jsonResponse(
+        {
+          success: true,
+          message: 'Cadastro realizado com sucesso.',
+          passenger: authPassenger(passenger),
         },
-      },
-      201,
-    );
+        201,
+      );
+    });
+  }
+
+  function loginPassengerRequest(body) {
+    var email = String(body.email || '').trim().toLowerCase();
+    var password = String(body.senha || '');
+    if (!email || !password) {
+      return Promise.resolve(jsonResponse({ success: false, message: 'Informe e-mail e senha válidos.' }, 400));
+    }
+
+    var db = readDb();
+    var passenger = db.passengers.find(function (item) {
+      return item.email === email;
+    });
+    if (!passenger) {
+      return Promise.resolve(jsonResponse({ success: false, message: 'E-mail ou senha incorretos.' }, 401));
+    }
+
+    if (!passenger.passwordHash || !passenger.passwordSalt) {
+      var salt = createSalt();
+      return hashPassword(password, salt).then(function (passwordHash) {
+        passenger.passwordHash = passwordHash;
+        passenger.passwordSalt = salt;
+        writeDb(db);
+        return jsonResponse({ success: true, message: 'Login realizado com sucesso.', passenger: authPassenger(passenger) }, 200);
+      });
+    }
+
+    return hashPassword(password, passenger.passwordSalt).then(function (hash) {
+      if (hash !== passenger.passwordHash) {
+        return jsonResponse({ success: false, message: 'E-mail ou senha incorretos.' }, 401);
+      }
+      return jsonResponse({ success: true, message: 'Login realizado com sucesso.', passenger: authPassenger(passenger) }, 200);
+    });
   }
 
   function getMethod(input, init) {
@@ -293,12 +348,31 @@
     return 'GET';
   }
 
+  function resolveBackendUrl(url) {
+    var apiIndex = url.indexOf('/api/');
+    if (apiIndex === -1) return url;
+    var path = url.slice(apiIndex);
+    var port = String(location.port || '');
+    if (port === '5173') return path;
+    if (url.indexOf('http://127.0.0.1:3001') === 0 || url.indexOf('http://localhost:3001') === 0) {
+      return url;
+    }
+    return 'http://127.0.0.1:3001' + path;
+  }
+
+  function fetchBackend(url, init) {
+    var target = resolveBackendUrl(url);
+    if (target === url) return originalFetch(url, init);
+    return originalFetch(target, init);
+  }
+
   window.fetch = function (input, init) {
     var url = typeof input === 'string' ? input : input && input.url ? input.url : '';
     var method = getMethod(input, init);
+    var requestInit = init || (typeof input === 'object' ? input : undefined);
 
-    if (url.indexOf('/api/health') !== -1) {
-      return Promise.resolve(jsonResponse({ status: 'ok', service: 'ExpressoTransSul local patch' }, 200));
+    if (url.indexOf('/api/') === -1) {
+      return originalFetch(input, init);
     }
 
     var cepMatch = url.match(/\/api\/cep\/(\d{8})/);
@@ -308,19 +382,54 @@
       });
     }
 
+    if (url.indexOf('/api/health') !== -1) {
+      return fetchBackend(url, requestInit).catch(function () {
+        return jsonResponse({ status: 'ok', service: 'ExpressoTransSul local patch' }, 200);
+      });
+    }
+
     if (url.indexOf('/api/cpf/validate') !== -1 && method === 'POST') {
-      return originalFetch(input, init).catch(function () {
-        return validateCpfRequest(parseBody(init));
+      return fetchBackend(url, requestInit).catch(function () {
+        return validateCpfRequest(parseBody(requestInit));
       });
     }
 
     if (url.indexOf('/api/passengers/register') !== -1 && method === 'POST') {
-      return originalFetch(input, init).catch(function () {
-        return registerPassengerRequest(parseBody(init));
-      });
+      var registerBody = parseBody(requestInit);
+      return fetchBackend(url, requestInit)
+        .then(function (res) {
+          if (res.ok) return res;
+          return res
+            .clone()
+            .json()
+            .then(function (data) {
+              if (data && data.success === false) {
+                return jsonResponse(data, res.status);
+              }
+              return registerPassengerRequest(registerBody);
+            })
+            .catch(function () {
+              return registerPassengerRequest(registerBody);
+            });
+        })
+        .catch(function () {
+          return registerPassengerRequest(registerBody);
+        });
     }
 
-    return originalFetch(input, init).catch(function () {
+    if (url.indexOf('/api/passengers/login') !== -1 && method === 'POST') {
+      var loginBody = parseBody(requestInit);
+      return fetchBackend(url, requestInit)
+        .then(function (res) {
+          if (res.ok) return res;
+          return loginPassengerRequest(loginBody);
+        })
+        .catch(function () {
+          return loginPassengerRequest(loginBody);
+        });
+    }
+
+    return fetchBackend(url, requestInit).catch(function () {
       throw new Error('Network error');
     });
   };

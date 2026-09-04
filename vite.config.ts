@@ -9,6 +9,7 @@ export default defineConfig(({ command }) => ({
       name: 'strip-live-server-redirect',
       apply: 'build',
       transformIndexHtml(html) {
+        const buildId = String(Date.now());
         return html
           .replace(
             /\s*<script>\s*\(function \(\) \{\s*var port = location\.port;[\s\S]*?dist\/index\.html[\s\S]*?\}\)\(\);\s*<\/script>/,
@@ -16,7 +17,7 @@ export default defineConfig(({ command }) => ({
           )
           .replace(
             /\s*<script>\s*\(function \(\) \{\s*var port = location\.port;[\s\S]*?cep-fetch-patch[\s\S]*?\}\)\(\);\s*<\/script>/,
-            '\n    <script src="./cep-fetch-patch.js"></script>',
+            `\n    <meta name="app-build" content="${buildId}" />\n    <script src="./cep-fetch-patch.js?v=${buildId}"></script>`,
           );
       },
     },

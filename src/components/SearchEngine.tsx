@@ -18,11 +18,45 @@ type SearchTab = 'passagens' | 'horarios' | 'reservas' | 'embarques';
 
 interface SearchEngineProps {
   variant?: 'hero' | 'page';
+  initialTab?: SearchTab;
 }
 
-export function SearchEngine({ variant = 'hero' }: SearchEngineProps) {
+function submitLabel(tab: SearchTab): string {
+  switch (tab) {
+    case 'passagens':
+      return 'Buscar Passagens';
+    case 'horarios':
+      return 'Consultar Horários';
+    case 'reservas':
+      return 'Ver Reservas';
+    case 'embarques':
+      return 'Consultar Embarques';
+    default: {
+      const _exhaustive: never = tab;
+      return _exhaustive;
+    }
+  }
+}
+
+function targetPath(tab: SearchTab): string {
+  switch (tab) {
+    case 'passagens':
+    case 'horarios':
+      return '/resultados';
+    case 'reservas':
+      return '/reservas';
+    case 'embarques':
+      return '/embarques';
+    default: {
+      const _exhaustive: never = tab;
+      return _exhaustive;
+    }
+  }
+}
+
+export function SearchEngine({ variant = 'hero', initialTab = 'passagens' }: SearchEngineProps) {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<SearchTab>('passagens');
+  const [activeTab, setActiveTab] = useState<SearchTab>(initialTab);
   const [tripType, setTripType] = useState<TripType>('ida');
   const [origin, setOrigin] = useState('');
   const [destination, setDestination] = useState('');
@@ -42,7 +76,7 @@ export function SearchEngine({ variant = 'hero' }: SearchEngineProps) {
       passageiros: String(passengers),
       tipo: activeTab,
     });
-    navigate(`/resultados?${params.toString()}`);
+    navigate(`${targetPath(activeTab)}?${params.toString()}`);
   };
 
   const swapCities = () => {
@@ -187,9 +221,7 @@ export function SearchEngine({ variant = 'hero' }: SearchEngineProps) {
 
           <button type="submit" className="btn btn-secondary btn-lg search-engine__submit">
             <Search size={20} />
-            {activeTab === 'passagens' ? 'Buscar Passagens' :
-             activeTab === 'horarios' ? 'Consultar Horários' :
-             activeTab === 'reservas' ? 'Ver Reservas' : 'Consultar Embarques'}
+            {submitLabel(activeTab)}
           </button>
         </div>
 

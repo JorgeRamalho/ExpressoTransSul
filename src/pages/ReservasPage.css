@@ -1,0 +1,123 @@
+.reservas-board {
+  padding-top: 1rem;
+}
+
+.reservas-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 1.5rem;
+}
+
+.reservas-route,
+.reservas-seats {
+  padding: 1.6rem;
+}
+
+.reservas-route__kind {
+  display: inline-block;
+  margin-bottom: 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-secondary);
+}
+
+.reservas-route__rest {
+  display: flex;
+  gap: 0.45rem;
+  margin: 1rem 0;
+  padding: 0.75rem;
+  border-radius: var(--radius-md);
+  background: #fff7ed;
+}
+
+.reservas-route__times {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.reservas-route__times span {
+  padding: 0.3rem 0.6rem;
+  border-radius: var(--radius-md);
+  background: var(--color-border-light);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.reservas-seats h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 0.4rem;
+}
+
+.reservas-seats p {
+  color: var(--color-text-muted);
+  margin-bottom: 1rem;
+}
+
+.seat-map {
+  display: grid;
+  gap: 0.45rem;
+  margin-bottom: 1rem;
+}
+
+.seat-map__row,
+.seat-map__cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.seat-map__aisle {
+  width: 1.4rem;
+}
+
+.seat {
+  min-width: 3.1rem;
+  height: 2.4rem;
+  border-radius: 0.6rem;
+  background: rgba(10, 77, 140, 0.08);
+  color: var(--color-primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.seat--selected {
+  background: var(--color-secondary);
+  color: white;
+}
+
+.seat--taken {
+  background: var(--color-border);
+  color: var(--color-text-light);
+  cursor: not-allowed;
+}
+
+.seat-map__legend {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-bottom: 1rem;
+}
+
+.reservas-confirm {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  margin-top: 1rem;
+  padding: 0.85rem;
+  border-radius: var(--radius-md);
+  background: #ecfdf5;
+  color: #065f46;
+}
+
+@media (max-width: 860px) {
+  .reservas-layout {
+    grid-template-columns: 1fr;
+  }
+}

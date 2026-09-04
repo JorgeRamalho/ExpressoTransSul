@@ -118,6 +118,23 @@ tests.push(async () => {
   assert(response.status === 201, `cadastro deve retornar 201 (recebeu ${response.status})`);
   assert(data.success === true, 'cadastro success true');
   assert(data.passenger?.email === payload.email, 'email retornado');
+
+  const login = await request('/api/passengers/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: payload.email, senha: payload.senha }),
+  });
+  assert(login.response.ok, `login deve retornar 200 (recebeu ${login.response.status})`);
+  assert(login.data.success === true, 'login success true');
+  assert(login.data.passenger?.email === payload.email, 'login devolve o mesmo e-mail');
+
+  const wrong = await request('/api/passengers/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: payload.email, senha: 'senha-errada' }),
+  });
+  assert(wrong.response.status === 401, 'senha errada deve retornar 401');
+  assert(wrong.data.success === false, 'senha errada não autentica');
 });
 
 async function main() {

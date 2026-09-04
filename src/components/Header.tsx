@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, User, Ticket, Phone } from 'lucide-react';
+import { Menu, X, User, Ticket, Phone, Smartphone } from 'lucide-react';
 import { Logo } from './Logo';
 import './Header.css';
 
 const navLinks = [
   { to: '/horarios', label: 'Horários' },
-  { to: '/companhias', label: 'Companhias' },
-  { to: '/terminais', label: 'Terminais' },
-  { to: '/destinos', label: 'Destinos' },
+  { to: '/promocoes', label: 'Promoções' },
+  { to: '/app#app-experiencia', label: 'App', menuOnly: true },
+  { to: '/companhias', label: 'Companhias', compactHidden: true },
+  { to: '/terminais', label: 'Terminais', compactHidden: true },
 ];
 
 export function Header() {
@@ -23,19 +24,38 @@ export function Header() {
         </Link>
 
         <nav className={`header__nav ${menuOpen ? 'header__nav--open' : ''}`} aria-label="Navegação principal">
-          {navLinks.map(({ to, label }) => (
-            <Link
-              key={to}
-              to={to}
-              className={`header__link ${location.pathname === to ? 'header__link--active' : ''}`}
-              onClick={() => setMenuOpen(false)}
-            >
-              {label}
-            </Link>
-          ))}
+          {navLinks.map(({ to, label, compactHidden, menuOnly }) => {
+            const path = to.split('#')[0] ?? to;
+            const isActive = location.pathname === path;
+            const extraClass = [
+              compactHidden ? 'header__link--compact-hidden' : '',
+              menuOnly ? 'header__link--menu-only' : '',
+            ].filter(Boolean).join(' ');
+
+            return (
+              <Link
+                key={to}
+                to={to}
+                className={`header__link ${isActive ? 'header__link--active' : ''} ${extraClass}`}
+                onClick={() => setMenuOpen(false)}
+              >
+                {label}
+              </Link>
+            );
+          })}
         </nav>
 
         <div className="header__actions">
+          <Link
+            to="/app#baixar-app"
+            className="header__app-btn"
+            aria-label="Baixar o aplicativo ExpressoTransSul, grátis"
+            onClick={() => setMenuOpen(false)}
+          >
+            <Smartphone size={16} />
+            <span className="header__app-btn__label">Baixar App</span>
+            <span className="header__app-btn__badge">Grátis</span>
+          </Link>
           <a href="tel:08006474300" className="header__phone" aria-label="Ligue 0800 647 4300">
             <Phone size={18} />
             <span>0800 647 4300</span>
@@ -46,11 +66,12 @@ export function Header() {
             onClick={() => setMenuOpen(false)}
           >
             <Ticket size={16} />
-            Compre Sua Passagem, Agora !
+            <span className="header__search-btn__full">Comprar Passagem</span>
+            <span className="header__search-btn__short">Comprar Passagem</span>
           </Link>
           <Link to="/area-cliente" className="btn btn-outline btn-sm">
             <User size={16} />
-            Área do Cliente
+            Entrar
           </Link>
           <button
             className="header__menu-btn"

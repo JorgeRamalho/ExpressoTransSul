@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { popularRoutes, type Route } from '../data/routes';
-import { ArrowRight, Clock, MapPin, DollarSign } from 'lucide-react';
+import { ArrowRight, Clock, MapPin, DollarSign, Zap } from 'lucide-react';
 import './RoutesSection.css';
 
 function RouteCities({ route }: { route: Route }) {
@@ -22,22 +22,46 @@ function RouteCities({ route }: { route: Route }) {
   );
 }
 
-export function RoutesSection() {
+interface RoutesSectionProps {
+  routes?: Route[];
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+}
+
+export function RoutesSection({
+  routes = popularRoutes,
+  eyebrow = 'Rotas Populares',
+  title = 'Destinos Mais Buscados',
+  description = 'Consulte horários, preços e disponibilidade nas principais rotas do Sul do Brasil.',
+}: RoutesSectionProps) {
   return (
     <section className="section routes-section" id="destinos">
       <div className="container">
         <div className="section-header">
-          <span className="eyebrow">Rotas Populares</span>
-          <h2>Destinos Mais Buscados</h2>
-          <p>Consulte horários, preços e disponibilidade nas principais rotas do Sul do Brasil.</p>
+          <span className="eyebrow">{eyebrow}</span>
+          <h2>{title}</h2>
+          <p>{description}</p>
         </div>
 
         <div className="routes-grid">
-          {popularRoutes.map((route) => (
-            <article key={route.id} className="route-card card">
+          {routes.map((route) => (
+            <article key={route.id} className={`route-card card ${route.serviceKind === 'express' ? 'route-card--express' : ''}`}>
               <div className="route-card__header">
+                {route.serviceKind === 'express' && (
+                  <span className="route-card__express">
+                    <Zap size={14} />
+                    Linha Direta
+                  </span>
+                )}
                 <RouteCities route={route} />
               </div>
+
+              {route.restStop && (
+                <p className="route-card__rest">
+                  Descanso de {route.restStop.durationMinutes} min em {route.restStop.city} — sem embarque/desembarque
+                </p>
+              )}
 
               <div className="route-card__info">
                 <div className="route-card__detail">

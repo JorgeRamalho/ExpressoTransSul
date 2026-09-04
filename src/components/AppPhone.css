@@ -1,0 +1,122 @@
+.app-phone {
+  position: relative;
+  width: min(280px, 100%);
+  margin: 0 auto;
+}
+
+.app-phone__glow {
+  position: absolute;
+  inset: 12% 8%;
+  background: radial-gradient(circle, rgba(0, 180, 216, 0.35), transparent 70%);
+  filter: blur(24px);
+  pointer-events: none;
+}
+
+.app-phone__device {
+  position: relative;
+  border-radius: 2rem;
+  padding: 0.7rem;
+  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+  box-shadow: var(--shadow-xl), 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.app-phone__notch {
+  position: absolute;
+  top: 0.95rem;
+  left: 50%;
+  width: 86px;
+  height: 14px;
+  transform: translateX(-50%);
+  border-radius: var(--radius-full);
+  background: #020617;
+  z-index: 2;
+}
+
+.app-phone__screen {
+  min-height: 460px;
+  border-radius: 1.45rem;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(10, 77, 140, 0.92) 0%, rgba(6, 58, 107, 0.96) 42%, #f8fafc 42%);
+  display: flex;
+  flex-direction: column;
+}
+
+.app-phone__status {
+  display: flex;
+  justify-content: space-between;
+  padding: 1.35rem 1rem 0.5rem;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.app-phone__hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 1.25rem 1.15rem 1rem;
+  animation: fadeInUp 0.45s ease;
+}
+
+.app-phone__icon {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 0.85rem;
+  background: rgba(255, 255, 255, 0.16);
+  color: white;
+}
+
+.app-phone__eyebrow {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-accent-gold);
+}
+
+.app-phone__hero h3 {
+  color: white;
+  font-size: 1.5rem;
+}
+
+.app-phone__hero p {
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 0.95rem;
+  max-width: 16rem;
+}
+
+.app-phone__chip {
+  margin-top: auto;
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--radius-full);
+  background: white;
+  color: var(--color-primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.app-phone__dock {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.25rem;
+  padding: 0.7rem 0.55rem 0.8rem;
+  background: white;
+  border-top: 1px solid var(--color-border);
+}
+
+.app-phone__dock-btn {
+  height: 34px;
+  border-radius: 0.55rem;
+  color: var(--color-text-muted);
+}
+
+.app-phone__dock-btn--active,
+.app-phone__dock-btn:hover {
+  background: rgba(10, 77, 140, 0.1);
+  color: var(--color-primary);
+}

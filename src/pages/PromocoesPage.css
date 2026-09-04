@@ -1,0 +1,47 @@
+.promo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+.promo-tile {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.promo-tile__audience {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+}
+
+.promo-tile__off {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  color: var(--color-secondary);
+}
+
+.promo-tile p {
+  color: var(--color-text-muted);
+}
+
+.promo-tile__code {
+  font-weight: 700;
+  color: var(--color-primary) !important;
+}
+
+.promo-tile__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: auto;
+}
+
+.promo-tile--gold { border-top: 4px solid var(--color-accent-gold); }
+.promo-tile--ocean { border-top: 4px solid var(--color-accent); }
+.promo-tile--sunset { border-top: 4px solid var(--color-secondary); }
+.promo-tile--forest { border-top: 4px solid var(--color-success); }

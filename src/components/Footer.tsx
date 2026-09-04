@@ -24,9 +24,10 @@ export function Footer() {
           <div className="footer__links">
             <h4>Serviços</h4>
             <ul>
-              <li><Link to="/horarios">Buscar Passagens</Link></li>
+              <li><Link to="/passagens">Buscar Passagens</Link></li>
               <li><Link to="/horarios">Consultar Horários</Link></li>
-              <li><Link to="/area-cliente">Minhas Reservas</Link></li>
+              <li><Link to="/reservas">Reservas</Link></li>
+              <li><Link to="/embarques">Embarques</Link></li>
               <li><Link to="/area-cliente">Área do Cliente</Link></li>
               <li><Link to="/cadastro">Cadastre-se</Link></li>
             </ul>
@@ -37,7 +38,10 @@ export function Footer() {
             <ul>
               <li><Link to="/companhias">Companhias Parceiras</Link></li>
               <li><Link to="/terminais">Terminais Rodoviários</Link></li>
-              <li><Link to="/destinos">Destinos Populares</Link></li>
+              <li><Link to="/destinos">Destinos e Linhas Diretas</Link></li>
+              <li><Link to="/promocoes">Promoções</Link></li>
+              <li><Link to="/sugestoes">Sugestões de viagem</Link></li>
+              <li><Link to="/app#baixar-app">Baixar o app</Link></li>
               <li><a href="#">Política de Privacidade</a></li>
               <li><a href="#">Termos de Uso</a></li>
             </ul>

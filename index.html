@@ -12,9 +12,9 @@
         var path = location.pathname.replace(/\\/g, "/");
         if (/\/dist(\/|$)/i.test(path)) return;
         var hash = location.hash || "";
+        var search = location.search || "";
         var base = location.origin + path.replace(/\/index\.html$/i, "").replace(/\/?$/, "/");
-        var qs = location.search ? location.search + "&" : "?";
-        location.replace(base + "dist/index.html" + qs + "v=" + Date.now() + hash);
+        location.replace(base + "dist/index.html" + search + hash);
       })();
     </script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />

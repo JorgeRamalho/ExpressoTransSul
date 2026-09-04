@@ -1,5 +1,6 @@
 import { SearchEngine } from '../components/SearchEngine';
 import { RoutesSection } from '../components/RoutesSection';
+import { ExpressLinesSection } from '../components/ExpressLinesSection';
 
 export function HorariosPage() {
   return (
@@ -14,10 +15,11 @@ export function HorariosPage() {
 
       <section className="section" style={{ marginTop: '-3rem', position: 'relative', zIndex: 2 }}>
         <div className="container">
-          <SearchEngine variant="page" />
+          <SearchEngine variant="page" initialTab="horarios" />
         </div>
       </section>
 
+      <ExpressLinesSection />
       <RoutesSection />
     </div>
   );

@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User, MapPin, Phone, Mail, CreditCard, Shield, CheckCircle, Loader2, AlertCircle } from 'lucide-react';
 import { useRegistrationValidation } from '../hooks/useRegistrationValidation';
-import { registerPassenger, checkApiHealth } from '../services/registrationApi';
+import { registerPassenger } from '../services/registrationApi';
 import { FIRST_TRIP_PROMO } from '../data/promoCampaign';
 import './RegistrationForm.css';
 
@@ -90,7 +90,6 @@ export function RegistrationForm() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
-  const [apiOnline, setApiOnline] = useState<boolean | null>(null);
   const [cpfConfirmed, setCpfConfirmed] = useState(false);
   const [cepConfirmed, setCepConfirmed] = useState(false);
 
@@ -108,10 +107,6 @@ export function RegistrationForm() {
     formatCep,
     formatPhone,
   } = useRegistrationValidation();
-
-  useEffect(() => {
-    void checkApiHealth().then(setApiOnline);
-  }, []);
 
   const updateField = (field: keyof FormData, value: string | boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -249,33 +244,29 @@ export function RegistrationForm() {
     }
 
     setSubmitting(true);
-    try {
-      const response = await registerPassenger({
-        ...formData,
-        cepSource: cepSource ?? 'manual',
-      });
+    const response = await registerPassenger({
+      ...formData,
+      cepSource: cepSource ?? 'manual',
+    });
 
-      if (!response.success) {
-        setSubmitError(response.message ?? response.errors?.join(' ') ?? 'Não foi possível concluir o cadastro.');
-        return;
-      }
-
-      localStorage.setItem(
-        'ets_user',
-        JSON.stringify({
-          id: response.passenger?.id,
-          nome: response.passenger?.nome ?? `${formData.nome} ${formData.sobrenome}`,
-          email: response.passenger?.email ?? formData.email,
-          cpf: response.passenger?.cpf ?? formData.cpf,
-        }),
-      );
-      setSubmitted(true);
-      setTimeout(() => navigate('/area-cliente'), 2000);
-    } catch {
-      setSubmitError('Erro de conexão com a API. Execute .\\start-dev.ps1 ou npm run dev:full.');
-    } finally {
+    if (!response.success) {
+      setSubmitError(response.message ?? response.errors?.join(' ') ?? 'Não foi possível concluir o cadastro.');
       setSubmitting(false);
+      return;
     }
+
+    localStorage.setItem(
+      'ets_user',
+      JSON.stringify({
+        id: response.passenger?.id,
+        nome: response.passenger?.nome ?? `${formData.nome} ${formData.sobrenome}`,
+        email: response.passenger?.email ?? formData.email,
+        cpf: response.passenger?.cpf ?? formData.cpf,
+      }),
+    );
+    setSubmitted(true);
+    setSubmitting(false);
+    setTimeout(() => navigate('/area-cliente'), 2000);
   };
 
   if (submitted) {
@@ -290,12 +281,6 @@ export function RegistrationForm() {
 
   return (
     <form id="formulario" className="registration-form" onSubmit={handleSubmit}>
-      {apiOnline === false && step === 4 && (
-        <div className="registration-form__alert" role="alert">
-          Para salvar o cadastro, inicie a API com <code>npm run api</code> ou use <code>npm run dev:full</code>.
-        </div>
-      )}
-
       <div className="registration-form__steps">
         {[1, 2, 3, 4].map((s) => (
           <button

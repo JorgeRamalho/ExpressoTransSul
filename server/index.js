@@ -217,6 +217,33 @@ app.post('/api/passengers/register', async (req, res) => {
   });
 });
 
+app.post('/api/passengers/login', async (req, res) => {
+  const email = String(req.body?.email ?? '').trim().toLowerCase();
+  const password = String(req.body?.senha ?? '');
+
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || !password) {
+    res.status(400).json({ success: false, message: 'Informe e-mail e senha válidos.' });
+    return;
+  }
+
+  const passenger = await findPassengerByEmail(email);
+  if (!passenger || hashPassword(password, passenger.passwordSalt) !== passenger.passwordHash) {
+    res.status(401).json({ success: false, message: 'E-mail ou senha incorretos.' });
+    return;
+  }
+
+  res.json({
+    success: true,
+    message: 'Login realizado com sucesso.',
+    passenger: {
+      id: passenger.id,
+      nome: `${passenger.nome} ${passenger.sobrenome}`,
+      email: passenger.email,
+      cpf: passenger.cpfFormatted,
+    },
+  });
+});
+
 app.listen(PORT, '127.0.0.1', () => {
   console.log(`ExpressoTransSul API em http://127.0.0.1:${PORT}`);
 });

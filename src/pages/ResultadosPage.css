@@ -79,6 +79,27 @@
   font-weight: 500;
 }
 
+.resultado-card__express {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--color-secondary);
+  background: #fff7ed;
+  padding: 0.125rem 0.5rem;
+  border-radius: var(--radius-full);
+}
+
+.resultado-card__rest {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0.25rem 0;
+  font-size: 0.8125rem;
+  color: var(--color-text);
+}
+
 .resultado-card__seats {
   font-size: 0.8125rem;
   color: var(--color-success);

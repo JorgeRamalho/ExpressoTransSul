@@ -1,5 +1,8 @@
 import { Hero } from '../components/Hero';
 import { PromoBanner } from '../components/PromoBanner';
+import { ExperienceHub } from '../components/ExperienceHub';
+import { ExpressLinesSection } from '../components/ExpressLinesSection';
+import { AppDownloadSection } from '../components/AppDownloadSection';
 import { RoutesSection } from '../components/RoutesSection';
 import { CompaniesSection } from '../components/CompaniesSection';
 import { BusGallery } from '../components/BusGallery';
@@ -36,7 +39,10 @@ export function HomePage() {
         </div>
       </section>
 
+      <ExperienceHub />
+      <ExpressLinesSection />
       <RoutesSection />
+      <AppDownloadSection />
       <BusGallery />
       <CompaniesSection />
 
