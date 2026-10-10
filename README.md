@@ -1,32 +1,14 @@
-# React + TypeScript + Vite
+📌##EspressoTransSul 🚌 - Transportes do Sul Ltda
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+🌐 ## Site Link do projeto online: https://expressotranssul.vercel.app/
 
-Currently, two official plugins are available:
+📂 ## Repositório: https://github.com//JorgeRamalho/ExpressoTranasSul
+💻 ## Tecnologias
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+HTML CSS JavaScript React TypeScript Node.js 📲 ## Funcionalidades
 
-## React Compiler
+Fotos e Imagens Vídeos Layout Estilo do Site
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+📠 ## Como executar git clone ... npm install npm run dev
 
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
-
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+💿 ## Autor 📄Seu nome: Jorge R. Barbosa 💼 LinkedIn: https://www.linkedin.com/in/jorge-r-barbosa-aabb0417b/ 👾 GitHub: https://github.com/JorgeRamalho ☎️ Contato: 41 99143-4153
