@@ -2,7 +2,7 @@
 
 🌐 ## Site Link do projeto online: https://expressotranssul.vercel.app/
 
-📂 ## Repositório: https://github.com//JorgeRamalho/ExpressoTranasSul
+📂 ## Repositório: https://github.com//JorgeRamalho/ExpressoTransSul
 💻 ## Tecnologias
 
 HTML CSS JavaScript React TypeScript Node.js 📲 ## Funcionalidades
